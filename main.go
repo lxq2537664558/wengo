@@ -8,7 +8,6 @@ package main
 
 import (
 	"fmt"
-	. "showgo/app"
 	"os"
 	"os/signal"
 	"runtime"
