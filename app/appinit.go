@@ -5,23 +5,29 @@
 package app
 
 import (
+	"../gproxy"
 	"flag"
-	log"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"os"
-	"sync"
+	"../gmodel"
 )
 
 var (
-	AppPath    string         // 路径
-	AppKindArg AppKind        // app类型 通过外部传递参数确定
-	App        Lifer     // app每个进程只有一个
-	Gwp        sync.WaitGroup // 全局的等待组 控制整个进程结束标志
+	App        Lifer               // app每个进程只有一个
+	ConfigPxy  *gproxy.ConfigProxy // 配置文件相关数据
+	AppPxy     *gproxy.AppProxy    // APP需要相关数据
 )
 
 // 这里app 的初始化工作
 func init() {
+	InitConfig()
 }
 
+//初始化配置文件
+func InitConfig()  {
+	ConfigPxy  = gproxy.NewConfigProxy()
+	AppPxy = gproxy.NewAppProxy()
+}
 // 获取命令行启动
 func GetStart() {
 	println("App init")
@@ -31,16 +37,15 @@ func GetStart() {
 	if intarg == 0 {
 		log.Debug("请输入app类型 -appkind > 0")
 	}
-	AppKindArg = ItoAppKind(intarg)
+	AppPxy.AppKindArg = gmodel.ItoAppKind(intarg)
 	// 获取当前路径程序执行路径
 	exepath, erro := os.Getwd()
 	if erro != nil {
 		log.Debug(erro.Error())
 	}
-	println(AppKindArg.ToString())
+	println(AppPxy.AppKindArg.ToString())
 	SetAppPath(exepath)
 	print(GetServerIniName())
-
+	
 	// sc.LoadConf()
 }
-

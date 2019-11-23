@@ -4,7 +4,7 @@
 // 1.
 // 2.
 // 3.
-package app
+package gmodel
 
 //服务器相关信息
 type ServerAppInfo struct {

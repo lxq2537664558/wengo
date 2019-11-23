@@ -4,7 +4,7 @@
 // 1.常量的定义
 // 2.
 // 3.
-package app
+package gmodel
 
 type AppKind int
 

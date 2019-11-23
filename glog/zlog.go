@@ -2,7 +2,7 @@
 //  作者: zjy
 //  功能介绍:
 //  $ log日志,一个
-package zlog
+package glog
 
 import "log"
 

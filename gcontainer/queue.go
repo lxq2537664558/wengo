@@ -5,7 +5,7 @@
 队列结构,封装列表集合
 */
 
-package zcontainer
+package gcontainer
 
 import "container/list"
 

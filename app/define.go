@@ -8,20 +8,27 @@ package app
 
 import (
 	log "github.com/sirupsen/logrus"
+	"path"
 )
 
 
 
 // 路径管理相关函数
 func SetAppPath(pwd string) {
-	AppPath = pwd
-	log.Debug("SetAppPath = ", AppPath)
+	AppPxy.AppPath = pwd
+	log.Debug("SetAppPath = ", AppPxy.AppPath)
 }
 func GetConfingsPath() string {
-	return AppPath + "/configs"
+	return  path.Join(AppPxy.AppPath ,"configs")
 }
 // 配置文件名称
 func GetServerIniName() string {
-	return AppPath + "/configs/" + AppKindArg.ToString() + ".ini"
+	return  path.Join(GetConfingsPath(),AppPxy.AppKindName + ".ini")
 }
+
+// 配置文件名称
+func GetDBJsonFile() string {
+	return  path.Join(GetConfingsPath(),"database.json")
+}
+
 
