@@ -1,20 +1,18 @@
-{
-  "dbs": [
-    {
-      "ip": "127.0.0.1",
-      "dbport": "3306",
-      "dbname": "wode",
-      "dbusername": "zjy",
-      "dbpwd": "zjy0822"
-    },
-    {
-      "ip": "127.0.0.1",
-      "dbport": "3306",
-      "dbname": "wod2",
-      "dbusername": "zjy",
-      "dbpwd": "zjy0822"
-    }
-  ]
-}
+[
+  {
+    "ip": "127.0.0.1",
+    "dbport": "3306",
+    "dbname": "wode",
+    "dbusername": "zjy",
+    "dbpwd": "zjy0822"
+  },
+  {
+    "ip": "127.0.0.1",
+    "dbport": "3306",
+    "dbname": "wod2",
+    "dbusername": "zjy",
+    "dbpwd": "zjy0822"
+  }
+]
 
 

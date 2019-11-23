@@ -4,4 +4,4 @@
 // 1.处理mysql相关逻辑
 // 2.
 // 3.
-package dbs
+package database
