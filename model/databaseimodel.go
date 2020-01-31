@@ -2,9 +2,9 @@
 //  作者: zjy
 //  功能介绍:
 //  $
-package gmodel
+package model
 
-type DataBaseInfo struct {
+type DataBaseModel struct {
 	Ip         string      `json:ip`// 地址
 	DBport     string      `json:dbport`// 端口号
 	DBname     string      `json:dbname`// 名称
@@ -13,7 +13,7 @@ type DataBaseInfo struct {
 }
 
 type DataBaseInfos struct {
-	Dbs  []DataBaseInfo
+	Dbs  []DataBaseModel
 }
 
 func NewDataBaseInfos() *DataBaseInfos {

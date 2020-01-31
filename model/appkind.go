@@ -4,7 +4,7 @@
 // 1.常量的定义
 // 2.
 // 3.
-package gmodel
+package model
 
 type AppKind int
 
@@ -16,6 +16,14 @@ const (
 	APP_ChatServer          = 4 // 聊天服
 	APP_WorldServer         = 5 // 世界服
 )
+var Apps = [...]string{
+	"none",
+	"client",
+	"logonserver",
+	"gameserver",
+	"chatserver",
+	"worldserver",
+}
 
 // 整数变为AppKind
 func ItoAppKind(val int) AppKind {
@@ -38,20 +46,8 @@ func ItoAppKind(val int) AppKind {
 }
 
 func (ak AppKind) ToString() string {
-	switch (ak) {
-	case APP_NONE:
-		return "none"
-	case APP_Client:
-		return "client"
-	case APP_LogonServer:
-		return "logonserver"
-	case APP_GameServer:
-		return "gameserver"
-	case APP_ChatServer:
-		return "chatserver"
-	case APP_WorldServer:
-		return "worldserver"
-	default:
-		return "NONE"
+	if ak >= APP_NONE  && ak <= APP_WorldServer {
+		return  Apps[ak]
 	}
+	return  Apps[APP_NONE]
 }

@@ -7,11 +7,11 @@
 package main
 
 import (
-	"fmt"
 	"./app"
+	_ "./proxy"
+	"fmt"
 	"os"
 	"os/signal"
-	 "path"
 	"runtime"
 	"syscall"
 )
@@ -22,19 +22,11 @@ func init() {
 
 // 各服务器主入口
 func main() {
-	// Gwp.Add(1) // 控制主线程退出
-	app.GetStart()
 	// 设置最大运行核数
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	paths := path.Join("aa","bbb")
-	fmt.Println(paths)
-	app.App = app.NewServerApp()
-	app.App.Start()
-	
+	app.GetStart()
 	// 等待退出 在app 退出后整个程序退出
-	// Gwp.Wait()
-	fmt.Println("Main Exit")
-	
+	xlog.Println("Main Exit")
 }
 
 func signalListen() {
@@ -47,3 +39,4 @@ func signalListen() {
 		break
 	}
 }
+

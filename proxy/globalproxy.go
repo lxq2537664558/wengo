@@ -5,4 +5,4 @@
 管理全局变量
 */
 
-package gproxy
+package proxy

@@ -13,18 +13,6 @@ import (
 
 
 
-// 路径管理相关函数
-func SetAppPath(pwd string) {
-	AppPxy.AppPath = pwd
-	log.Debug("SetAppPath = ", AppPxy.AppPath)
-}
-func GetConfingsPath() string {
-	return  path.Join(AppPxy.AppPath ,"configs")
-}
-// 配置文件名称
-func GetServerIniName() string {
-	return  path.Join(GetConfingsPath(),AppPxy.AppKindName + ".ini")
-}
 
 // 配置文件名称
 func GetDBJsonFile() string {

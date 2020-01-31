@@ -3,7 +3,7 @@
 作者: zjy
 功能介绍:
 */
-package app
+package xengine
 
 type Confer interface {
 	InitConf() bool

@@ -5,18 +5,15 @@
 package app
 
 import (
-	"../gproxy"
+	"../proxy"
 	"flag"
 	log "github.com/sirupsen/logrus"
 	"os"
-	"../gmodel"
+	"../model"
+	"../loginserver"
 )
 
-var (
-	App        Lifer               // app每个进程只有一个
-	ConfigPxy  *gproxy.ConfigProxy // 配置文件相关数据
-	AppPxy     *gproxy.AppProxy    // APP需要相关数据
-)
+
 
 // 这里app 的初始化工作
 func init() {
@@ -25,8 +22,7 @@ func init() {
 
 //初始化配置文件
 func InitConfig()  {
-	ConfigPxy  = gproxy.NewConfigProxy()
-	AppPxy = gproxy.NewAppProxy()
+
 }
 // 获取命令行启动
 func GetStart() {
@@ -37,15 +33,37 @@ func GetStart() {
 	if intarg == 0 {
 		log.Debug("请输入app类型 -appkind > 0")
 	}
-	AppPxy.AppKindArg = gmodel.ItoAppKind(intarg)
+	AppPxy.AppInfo.AppKindArg = model.ItoAppKind(intarg)
 	// 获取当前路径程序执行路径
 	exepath, erro := os.Getwd()
 	if erro != nil {
 		log.Debug(erro.Error())
 	}
-	println(AppPxy.AppKindArg.ToString())
+	println(AppPxy.AppInfo.AppKindArg.ToString())
 	SetAppPath(exepath)
 	print(GetServerIniName())
 	
+	appBehavior = NewAppBehavior()
+	
 	// sc.LoadConf()
+}
+
+//app 逻辑参数根据服务器启动的参数创建对应的服务器接口
+func NewAppBehavior() AppBehavior {
+	switch  AppPxy.AppInfo.AppKindArg {
+	case model.APP_NONE:
+		return nil
+	case model.APP_Client:
+		return nil
+	case model.APP_LogonServer: // 登录服逻辑接口
+		return loginserver.NewLogionServer()
+	case model.APP_GameServer:
+		return nil
+	case model.APP_ChatServer:
+		return nil
+	case model.APP_WorldServer:
+		return nil
+	default:
+		return nil
+	}
 }

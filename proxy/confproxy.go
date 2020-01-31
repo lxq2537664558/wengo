@@ -5,34 +5,39 @@
 
 */
 
-package app
+package proxy
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/widuu/goini"
 	"os"
+	."../model"
+	"path"
 )
 
-type ServerConf struct {
+type ConfigProxy struct {
 	conf *goini.Config
+	Dbs  []DataBaseModel
 }
 
 // 创建server对象
-func NewserverConf() Confer {
-	return &ServerConf{}
+func NewConfigProxy() Confer {
+	return &ConfigProxy{}
+}
+func (pthpro *ConfigProxy) InitProxy() {
+
+}
+func (pxy *ConfigProxy) RealseProxy() {
+
 }
 
-func (sc *ServerConf)InitConf() bool{
-	// sc.conf = goini.SetConfig(GetConfingsPath() + "\\" + GetConfigFileName())
-	// sc.conf.ReadList()
-	sc.LoadConf()
+func (sc *ConfigProxy)InitConf() bool{
+	sc.readConfig()
 	return  true
 }
 
-
-
-func (sc *ServerConf)readConfig()  {
+func (sc *ConfigProxy)readConfig()  {
 	dbconffilePtr, err := os.Open(GetDBJsonFile())
 	if err != nil {
 		fmt.Println("Open file failed [Err:%s]", err.Error())
@@ -49,10 +54,18 @@ func (sc *ServerConf)readConfig()  {
 	}
 }
 
-func (sc *ServerConf)LoadConf()  {
-	sc.readConfig()
+func (sc *ConfigProxy)readIni()  {
+	sc.conf = goini.SetConfig(GetConfingsPath() + "\\" + GetConfigFileName())
+	sc.conf.ReadList()
+}
+func (sc *ConfigProxy)readDataBase()  {
+
 }
 
-func (sc *ServerConf)Reload()  {
+func (sc *ConfigProxy)LoadConf()  {
+
+}
+
+func (sc *ConfigProxy)Reload()  {
 	sc.LoadConf()
 }
