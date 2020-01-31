@@ -37,11 +37,11 @@ var (
 )
 
 type Xlog struct {
-	initInfo   LogInitModel // 初始化
-	baseLog    *log.Logger  // 内置log库的处理
-	writeFile  *os.File     // 写日志的文件对象
-	logBufchan chan *LogModel
-	closelog   chan int
+	initInfo   LogInitModel   // 初始化
+	baseLog    *log.Logger    // 内置log库的处理
+	writeFile  *os.File       // 写日志的文件对象
+	logBufchan chan *LogModel // 日志信息
+	closelog   chan int       // 日志关闭通道
 }
 
 // 创建日志对象

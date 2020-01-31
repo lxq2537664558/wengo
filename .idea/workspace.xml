@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95c6dc34-317c-4050-9fdd-6c13bed3fdfa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/appbehavior.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/appbehavior.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/appinit.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/appinit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/define.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/define.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2019-11-25/2019112500.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2019-12-23/2019122300.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/appkind.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/appkind.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/logmodel.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/logmodel.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy/appproxy.go" beforeDir="false" afterPath="$PROJECT_DIR$/proxy/appproxy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy/confproxy.go" beforeDir="false" afterPath="$PROJECT_DIR$/proxy/confproxy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy/pathproxy.go" beforeDir="false" afterPath="$PROJECT_DIR$/proxy/pathproxy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy/proxyinit.go" beforeDir="false" afterPath="$PROJECT_DIR$/proxy/proxyinit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xcontainer/queue/queue.go" beforeDir="false" afterPath="$PROJECT_DIR$/xcontainer/queue/queue.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xlog/xlog.go" beforeDir="false" afterPath="$PROJECT_DIR$/xlog/xlog.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xutil/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/xutil/util.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/xlog/xlog.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="200" column="24" lean-forward="true" selection-start-line="200" selection-start-column="24" selection-end-line="200" selection-end-column="24" />
+            <state relative-caret-position="340">
+              <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
               <folding>
                 <element signature="e#177#307#0" expanded="true" />
               </folding>
@@ -425,7 +409,7 @@
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.24645892" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45184135" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.11614731" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.23371105" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -874,8 +858,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/xlog/xlog.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="200" column="24" lean-forward="true" selection-start-line="200" selection-start-column="24" selection-end-line="200" selection-end-column="24" />
+        <state relative-caret-position="340">
+          <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
           <folding>
             <element signature="e#177#307#0" expanded="true" />
           </folding>
