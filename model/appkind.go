@@ -11,15 +11,15 @@ type AppKind int
 const (
 	APP_NONE        AppKind = 0 // 无类型
 	APP_Client              = 1 // 客户端
-	APP_LogonServer         = 2 // 登陆服
+	APP_LoginServer         = 2 // 登陆服
 	APP_GameServer          = 3 // 游戏服
 	APP_ChatServer          = 4 // 聊天服
 	APP_WorldServer         = 5 // 世界服
 )
-var Apps = [...]string{
+var AppNames = [...]string{
 	"none",
 	"client",
-	"logonserver",
+	"loginserver",
 	"gameserver",
 	"chatserver",
 	"worldserver",
@@ -33,7 +33,7 @@ func ItoAppKind(val int) AppKind {
 	case 1:
 		return APP_Client
 	case 2:
-		return APP_LogonServer
+		return APP_LoginServer
 	case 3:
 		return APP_GameServer
 	case 4:
@@ -47,7 +47,7 @@ func ItoAppKind(val int) AppKind {
 
 func (ak AppKind) ToString() string {
 	if ak >= APP_NONE  && ak <= APP_WorldServer {
-		return  Apps[ak]
+		return  AppNames[ak]
 	}
-	return  Apps[APP_NONE]
+	return  AppNames[APP_NONE]
 }

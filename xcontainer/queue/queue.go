@@ -41,7 +41,7 @@ func (q *Queue)PopFront() (interface{}, error)  {
 	if q.Len()  == 0 {
 		return  nil,errors.New("Queue Empty")
 	}
-	return q.qlist.Remove(q.qlist.Front()),nil
+	return 	q.qlist.Remove(q.qlist.Front()),nil
 }
 
 func (q *Queue)Clear() {

@@ -15,6 +15,7 @@ type PathProxy struct {
 	LogsPath    string
 	ConfPath    string
 	ConfIniPath string
+	DBJsonFile  string
 }
 
 // 创建AppProxy
@@ -29,11 +30,14 @@ func (pthpro *PathProxy) SetAppPath(pwd string) {
 }
 
 func (pthpro *PathProxy) InitProxy() {
-	pthpro.AppRootPath = path.Join(pthpro.AppRootPath, "configs")
-	pthpro.CsvPath = path.Join(pthpro.LogsPath, "logs")
-	pthpro.LogsPath = path.Join(pthpro.CsvPath, "csv")
-	pthpro.ConfPath = path.Join(pthpro.ConfPath, AppPxy.AppInfo.AppKindArg.ToString()+".ini")
+	pthpro.ConfPath = path.Join(pthpro.AppRootPath, "configs")
+	pthpro.CsvPath = path.Join(pthpro.LogsPath, "csv")
+	pthpro.LogsPath = path.Join(pthpro.CsvPath, "logs")
+	pthpro.ConfIniPath = path.Join(pthpro.ConfPath, AppPxy.AppInfo.AppKindArg.ToString()+".ini")
+	pthpro.DBJsonFile = path.Join(pthpro.ConfIniPath,"database.json")
 }
+
 func (pxy *PathProxy) RealseProxy() {
 
 }
+

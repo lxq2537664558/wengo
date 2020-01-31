@@ -10,10 +10,11 @@ package proxy
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/widuu/goini"
-	"os"
-	."../model"
 	"path"
+	"os"
+	"github.com/widuu/goini"
+	."github.com/showgo/model"
+	_"github.com/showgo/xengine"
 )
 
 type ConfigProxy struct {
@@ -53,6 +54,7 @@ func (sc *ConfigProxy)readConfig()  {
 		fmt.Println("解析结构体 =%+v",ConfigPxy.Dbs)
 	}
 }
+
 
 func (sc *ConfigProxy)readIni()  {
 	sc.conf = goini.SetConfig(GetConfingsPath() + "\\" + GetConfigFileName())

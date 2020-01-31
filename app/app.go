@@ -6,8 +6,8 @@
 package app
 
 import (
-	. "../proxy"
-	"../xlog"
+	."github.com/showgo/proxy"
+	"github.com/showgo/xlog"
 )
 
 var (
@@ -21,20 +21,7 @@ func G() {
 }
 
 
-//1. app相关的配置文件初始化
-//2. 设置app参数
-func StartApp() {
-	
-	// 设置启动标志位
-	AppPxy.EndFlag.Open()
-	appBehavior = NewAppBehavior()
-	appBehavior.StartApp()
-	// 启动App
-	AppPxy.AppWG.Add(1)
-	go AppRun()         // App 主要工作线程
-	AppPxy.AppWG.Wait() // 等待app退出
-	CloseApp()          // 关闭app退出所有程序
-}
+
 
 // 逻辑app 主要工作线程
 func AppRun() {

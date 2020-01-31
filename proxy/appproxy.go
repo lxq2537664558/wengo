@@ -8,7 +8,7 @@
 package proxy
 
 import (
-	"../model"
+	"github.com/showgo/model"
 	"sync"
 )
 

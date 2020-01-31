@@ -8,23 +8,24 @@
 package xutil
 
 import (
-	"encoding/csv"
 	"fmt"
-	"io"
-	"../xlog"
 	"os"
 )
 
 
-func MakeDir(dir string){
+func MakeDir(dir string) bool{
 	exists,err := PathExists(dir)
-	if !exists {
+	if err != nil {
 		fmt.Println(err)
+	}
+	if !exists {
 		err := os.Mkdir(dir, os.ModePerm)
 		if err != nil{
 			fmt.Println(err)
+			return false
 		}
 	}
+	return  true
 }
 // 判断文件是否存在
 func PathExists(path string) (bool, error) {
@@ -39,18 +40,18 @@ func PathExists(path string) (bool, error) {
 }
 
 func ReadCsv()  {
-	r := csv.NewReader(fs)
-	//针对大文件，一行一行的读取文件
-	for {
-		row, err := r.Read()
-		if err != nil && err != io.EOF {
-			xlog.WarningLog("can not read, err is %+v", err)
-		}
-		if err == io.EOF {
-			break
-		}
-		fmt.Println(row)
-	}
+	// r := csv.NewReader(fs)
+	// //针对大文件，一行一行的读取文件
+	// for {
+	// 	row, err := r.Read()
+	// 	if err != nil && err != io.EOF {
+	// 		xlog.WarningLog("","can not read, err is %+v", err)
+	// 	}
+	// 	if err == io.EOF {
+	// 		break
+	// 	}
+	// 	fmt.Println(row)
+	// }
 	
 	
 }

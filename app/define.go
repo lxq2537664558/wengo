@@ -6,17 +6,9 @@
 */
 package app
 
-import (
-	log "github.com/sirupsen/logrus"
-	"path"
-)
 
 
 
 
-// 配置文件名称
-func GetDBJsonFile() string {
-	return  path.Join(GetConfingsPath(),"database.json")
-}
 
 

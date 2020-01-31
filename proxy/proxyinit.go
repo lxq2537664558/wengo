@@ -28,6 +28,7 @@ func createProxy()  {
 func InitProxy()  {
 	PathPxy.InitProxy()
 	ConfigPxy.InitConf()
+	AppPxy.InitProxy()
 }
 
 

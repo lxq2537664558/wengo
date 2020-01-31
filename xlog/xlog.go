@@ -9,10 +9,10 @@
 package xlog
 
 import (
-	. "../model"
-	"../timeutil"
-	"../xutil"
 	"fmt"
+	. "github.com/showgo/model"
+	"github.com/showgo/timeutil"
+	"github.com/showgo/xutil"
 	"io"
 	"log"
 	"os"
@@ -25,106 +25,127 @@ const (
 
 // 日志等级定义
 const (
-	Normal = 0 << iota
-	DebugLvl
-	WarningLvl
-	ErrorLvl
+	Normal     = 0
+	DebugLvl   = 1 << 0
+	WarningLvl = 1 << 1
+	ErrorLvl   = 1 << 2
 )
 
 var (
-	xlog         *Xlog
-	isOutStd     bool // 是否在标准输出输入
+	_xlog        *Xlog // 日志执行者对象
 	loglvlStrMap map[int16]string
-	showLvl      int16 // 显示日志等级
 )
 
 type Xlog struct {
-	baseLog    *log.Logger    //内置log库的处理
+	initInfo   LogInitModel // 初始化
+	baseLog    *log.Logger  // 内置log库的处理
+	writeFile  *os.File     // 写日志的文件对象
 	logBufchan chan *LogModel
-	info       *LogInitModel  //初始化
-	writeFile  *os.File
 	closelog   chan int
 }
 
-//
-
 // 创建日志对象
-func NewXlog(info *LogInitModel) *Xlog {
-	xlog := new(Xlog)
-	xlog.baseLog = log.New(os.Stdout, "", log.LstdFlags)
-	xlog.logBufchan = make(chan *LogModel, info.LogQueueCap)
-	xlog.closelog = make(chan int)
-	xlog.info = info
+func NewXlog(info LogInitModel) bool {
+	_xlog = new(Xlog)
+	if _xlog == nil {
+		fmt.Errorf("_NewXlog xlog is nil")
+		return false
+	}
+	_xlog.baseLog = log.New(os.Stdout, "", log.LstdFlags)
+	_xlog.logBufchan = make(chan *LogModel, info.LogQueueCap)
+	_xlog.closelog = make(chan int)
+	_xlog.initInfo = info
+	loglvlStrMap = make(map[int16]string)
 	initXlog()
-	return xlog
+	go _xlog.run()
+	return true
 }
 
 func initXlog() {
-	loglvlStrMap[Normal] = ""
-	loglvlStrMap[DebugLvl] = "调试"
-	loglvlStrMap[WarningLvl] = "警告"
-	loglvlStrMap[ErrorLvl] = "错误"
+	loglvlStrMap[Normal] = "无"
+	loglvlStrMap[DebugLvl] = "调试||"
+	loglvlStrMap[WarningLvl] = "警告||"
+	loglvlStrMap[ErrorLvl] = "错误||"
 }
 
-//设置日志等级并设置是否在控制台显示
-func SetShowLog(outStd bool,showlel  int16)  {
-	isOutStd = outStd
-	showLvl = showlel
-}
-func DebugLog(scenename string,format string,v ...interface{}) {
-	addLogToLogBufchan(DebugLvl,scenename,format,v...)
-}
-func WarningLog(scenename string,format string, v ...interface{}) {
-	addLogToLogBufchan(WarningLvl,scenename,format,v...)
+// 设置日志等级并设置是否在控制台显示 目前这两个经常改变
+func SetShowLogAndStartLog(restmodel RestLogModel) bool {
+	if _xlog == nil {
+		fmt.Errorf("SetShowLogAndStartLog xlog is nil")
+		return false
+	}
+	_xlog.initInfo.LogQueueCap = restmodel.LogQueueCap
+	_xlog.initInfo.IsOutStd = restmodel.IsOutStd
+	_xlog.initInfo.ShowLvl = restmodel.ShowLvl
+	return true
 }
 
-func ErrorLog(scenename string,format string, v ...interface{}) {
-	addLogToLogBufchan(ErrorLvl,scenename,format,v...)
+func DebugLog(scenename string, format string, v ...interface{}) {
+	addLogToLogBufchan(DebugLvl, scenename, format, v...)
 }
+func WarningLog(scenename string, format string, v ...interface{}) {
+	addLogToLogBufchan(WarningLvl, scenename, format, v...)
+}
+
+func ErrorLog(scenename string, format string, v ...interface{}) {
+	addLogToLogBufchan(ErrorLvl, scenename, format, v...)
+}
+
 // 向log日志队列中写日志信息
-func addLogToLogBufchan(loglvl int16,scenename string,format string, v ...interface{}) {
-	lm  := new(LogModel)
+func addLogToLogBufchan(loglvl int16, scenename string, format string, v ...interface{}) {
+	// 未设置对应的日志等级就不能打印
+	if !canLogBylvl(loglvl) {
+		return
+	}
+	lm := new(LogModel)
 	lm.OutStr = fmt.Sprintf(format, v...)
 	lm.LogGenerateTime = timeutil.GetCurrentTimeNano()
 	lm.LogLvel = loglvl
 	lm.SceneName = scenename
-	xlog.logBufchan <- lm
+	_xlog.logBufchan <- lm
 }
 
 func (xl *Xlog) writeLogToFile(lm *LogModel) {
-	xl.NewLogDir(lm.LogGenerateTime)  //查看目录是否存在
-	xl.NewLogFile(lm.LogGenerateTime,lm.SceneName) //创建文件
+	isOk := xl.NewLogDir(lm.LogGenerateTime) // 查看目录是否存在
+	if !isOk {
+		return
+	}
+	isOk = xl.NewLogFile(lm.LogGenerateTime, lm.SceneName) // 创建文件
+	if !isOk {
+		return
+	}
 	xl.setOutFile()
 	xl.setOutPrefix(lm.LogLvel)
-	xl.baseLog.Println(lm.OutStr) //向输出流输出字符串
-	xl.writeFile.Close() // 最后关闭文件
+	xl.baseLog.Println(lm.OutStr) // 向输出流输出字符串
+	xl.writeFile.Close()          // 最后关闭文件
 }
 
 func (xl *Xlog) setOutFile() {
-	//如果不能输出日志都在标准中输出
-	if xl.writeFile == nil || !CanLogBylvl(DebugLvl)  {
+	if xl.writeFile == nil {
 		xl.baseLog.SetOutput(os.Stdout)
-	} else if isOutStd && xl.writeFile != nil {
+	} else if _xlog.initInfo.IsOutStd && xl.writeFile != nil {
 		xl.baseLog.SetOutput(io.MultiWriter(os.Stdout, xl.writeFile))
 	} else {
 		xl.baseLog.SetOutput(xl.writeFile)
 	}
 }
+
 // 创建日志日期路径
-func (xl *Xlog) NewLogDir(currentNano int64) {
-	dirs := path.Join(xl.info.LogsPath, timeutil.GetYearMonthDayFromatStr(currentNano))
-	xutil.MakeDir(dirs)
+func (xl *Xlog) NewLogDir(currentNano int64) bool {
+	dirs := path.Join(xl.initInfo.LogsPath, timeutil.GetYearMonthDayFromatStr(currentNano))
+	return xutil.MakeDir(dirs)
 }
 
-func (xl *Xlog) NewLogFile(currentNano int64,scenename string) {
-	filename := timeutil.GetYearMonthDayHourFromatStr(currentNano) + xl.info.ServerName + "_" + scenename+ ".log"
-	str := path.Join(xl.info.LogsPath, timeutil.GetYearMonthDayFromatStr(currentNano), filename)
-	fmt.Println(str)
+func (xl *Xlog) NewLogFile(currentNano int64, scenename string) bool {
+	filename := timeutil.GetYearMonthDayHourFromatStr(currentNano) + "_" + xl.initInfo.ServerName + "_" + scenename + ".log"
+	str := path.Join(xl.initInfo.LogsPath, timeutil.GetYearMonthDayFromatStr(currentNano), filename)
 	tempfile, err := os.OpenFile(str, os.O_CREATE|os.O_APPEND, os.ModePerm)
 	if err != nil {
-		xlog.baseLog.Println(err)
+		_xlog.baseLog.Println(err)
+		return false
 	}
 	xl.writeFile = tempfile
+	return true
 }
 
 func (xl *Xlog) setOutPrefix(reqlvl int16) {
@@ -133,48 +154,50 @@ func (xl *Xlog) setOutPrefix(reqlvl int16) {
 	}
 }
 
-//日志执行逻辑线程
+// 日志执行逻辑线程
 func (xl *Xlog) run() {
 	
-	//拉起错误
+	// 拉起宕机
 	defer func() {
 		if err := recover(); err != nil {
 			ErrorLogInterfaceParam(err)
 		}
 	}()
-	
+
+ENDLOOP:
 	for {
 		select {
 		case logmodel := <-xl.logBufchan: // 获取队列数据
 			xl.writeLogToFile(logmodel)
 		case listenCloseCode := <-xl.closelog:
-			xl.baseLog.Println("关闭日志码 = ", listenCloseCode)
-			break // 这里就跳出循环
+			fmt.Println("日志关闭码 = ", listenCloseCode)
+			break ENDLOOP // 这里就跳出循环
 		}
 	}
-	// 结束日志线
 	xl.close()
 }
 
-
 func ErrorLogInterfaceParam(logstr interface{}) {
 	if logstrtem, ok := logstr.(string); ok {
-		ErrorLog("Normol",logstrtem)
+		fmt.Errorf("Normol", logstrtem)
 	}
 }
 
-
-//如果不能输出日志都在标准中输出
-func CanLogBylvl(loglvl int16) bool {
-	return (loglvl & showLvl) != 0
+// 如果不能输出日志都在标准中输出
+func canLogBylvl(loglvl int16) bool {
+	if _xlog == nil {
+		return false
+	}
+	return (loglvl & _xlog.initInfo.ShowLvl) != 0
 }
 
 // 关闭日志
 func CloseLog(colseCode int) {
-	xlog.closelog <- colseCode
+	_xlog.closelog <- colseCode
 }
 
 func (xl *Xlog) close() {
+	fmt.Println("Close log")
 	close(xl.logBufchan)
 	close(xl.closelog)
 	if xl.writeFile != nil {
