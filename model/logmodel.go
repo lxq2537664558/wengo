@@ -7,7 +7,7 @@ log 相关 数据类型定义
 
 package model
 
-type RestLogModel struct {
+type VolatileLogModel struct {
 	LogQueueCap int   // 日志队列大小
 	IsOutStd    bool  // 是否在标准输出输入
 	ShowLvl     int16 // 显示日志等级
@@ -17,7 +17,7 @@ type RestLogModel struct {
 type LogInitModel struct {
 	ServerName string
 	LogsPath   string
-	RestLogModel
+	VolatileLogModel
 }
 
 // 日志参数
