@@ -13,16 +13,16 @@ const (
 	APP_Client              = 1 // 客户端
 	APP_LoginServer         = 2 // 登陆服
 	APP_GameServer          = 3 // 游戏服
-	APP_ChatServer          = 4 // 聊天服
+	APP_MsgServer           = 4 // 聊天服
 	APP_WorldServer         = 5 // 世界服
 )
 var AppNames = [...]string{
 	"none",
 	"client",
-	"loginserver",
-	"gameserver",
-	"chatserver",
-	"worldserver",
+	"loginsv",
+	"gamesv",
+	"msgsv",
+	"worldsv",
 }
 
 // 整数变为AppKind
@@ -37,7 +37,7 @@ func ItoAppKind(val int) AppKind {
 	case 3:
 		return APP_GameServer
 	case 4:
-		return APP_ChatServer
+		return APP_MsgServer
 	case 5:
 		return APP_WorldServer
 	default:

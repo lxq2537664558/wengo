@@ -10,16 +10,20 @@ package xutil
 import (
 	"fmt"
 	"os"
+	"path"
+	"runtime"
+	"strings"
+	"github.com/showgo/conf"
 )
 
 
-func MakeDir(dir string) bool{
+func MakeDirAll(dir string) bool{
 	exists,err := PathExists(dir)
-	if err != nil {
-		fmt.Println(err)
-	}
 	if !exists {
-		err := os.Mkdir(dir, os.ModePerm)
+		if err != nil {
+			fmt.Println(dir," 不存在需要创建",err)
+		}
+		err := os.MkdirAll(dir, os.ModePerm)
 		if err != nil{
 			fmt.Println(err)
 			return false
@@ -39,20 +43,96 @@ func PathExists(path string) (bool, error) {
 	return false, err
 }
 
-func ReadCsv()  {
-	// r := csv.NewReader(fs)
-	// //针对大文件，一行一行的读取文件
-	// for {
-	// 	row, err := r.Read()
-	// 	if err != nil && err != io.EOF {
-	// 		xlog.WarningLog("","can not read, err is %+v", err)
-	// 	}
-	// 	if err == io.EOF {
-	// 		break
-	// 	}
-	// 	fmt.Println(row)
-	// }
+//获取目录
+func ReadDir(path string) (*os.File, error)  {
+	return  os.OpenFile(path, os.O_RDONLY, os.ModeDir)
+}
+
+//验证内置类型数组
+func ValidArrIndex(arr interface{},index int) bool  {
+	if arr == nil {
+		return false
+	}
+	// 下标为负
+	if   index < 0  {
+		return  false
+	}
+	switch val := arr.(type) {
+	case []int:
+		return index < len(val)
+	case []string:
+		return index < len(val)
+	case []float32:
+		return index < len(val)
+	default:
+		fmt.Println(arr,"is an unknown type. ")
+		return false
+	}
+	return true
+}
+
+//是否错误，有错返回 true无错返回false
+func IsError(err error) bool  {
+	if  err != nil {
+		buf := make([]byte, conf.LenStackBuf)
+		l := runtime.Stack(buf, false)
+		fmt.Printf("%v %s", err, buf[:l])
+		return true
+	}
+	return  false
+}
+
+//是否错误，有错返回 true无错返回false
+func IsErrorNoPrintf(err error) bool  {
+	return err != nil
+}
+
+//判断字符串是否有数据  无数据返回true
+func StringIsNil(str string) bool  {
+	return   len(str) == 0 || str == ""
+}
+
+// Capitalize 字符首字母大写
+func Capitalize(str string) string {
+	if StringIsNil(str) {
+		return str
+	}
+	var upperStr string
+	vv := []rune(str)
+	if vv[0] >= 97 && vv[0] <= 122 {  // 后文有介绍
+		vv[0] -= 32 // string的码表相差32位
+		upperStr = string(vv[0]) + string(vv[1:len(vv)])
+	} else {
+		fmt.Println("Not begins with lowercase letter,")
+		return str
+	}
 	
-	
+	return upperStr
+}
+
+//是否是xlsx 文件
+func IsXlsx(fileName string) bool  {
+	return path.Ext(fileName) == ".xlsx" && !strings.HasPrefix(fileName, "~$")
+}
+//验证csv行数据是否有效
+//除第三行外,行没有注释 str首字符 != #  ASCII表 35
+//并且id不为nil
+func ValidCsvRow(str string,rownum int) bool  {
+	if StringIsNil(str)  {
+		return false
+	}
+	if rownum != 2 && str[0] == 35 {
+		return  false
+	}
+	return true
+}
+
+
+//计算内存
+func MemConsumed()  uint64 {
+	runtime.GC() //GC，排除对象影响
+	var memStat runtime.MemStats
+	runtime.ReadMemStats(&memStat)
+	return memStat.Sys
 }
 

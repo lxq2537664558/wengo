@@ -9,32 +9,27 @@ package proxy
 
 var (
 	PathPxy   *PathProxy   // 路径相关处理
-	ConfigPxy *ConfigProxy // 配置文件相关数据
 	AppPxy    *AppProxy    // APP需要相关数据
 )
 
 func init() {
 	createProxy()
-	InitProxy()
 }
 // 创建代理对象
 func createProxy()  {
 	//创建对象在前
-	PathPxy = NewPathProxy()
-	ConfigPxy = NewConfigProxy()
 	AppPxy = NewAppProxy()
+	PathPxy = NewPathProxy()
 }
 //初始化代理对象
 func InitProxy()  {
-	PathPxy.InitProxy()
-	ConfigPxy.InitConf()
 	AppPxy.InitProxy()
+	PathPxy.InitProxy()
 }
 
 
 func RealseProxy()  {
 	//创建对象在前
-	PathPxy = NewPathProxy()
-	ConfigPxy = NewConfigProxy()
-	AppPxy = NewAppProxy()
+	PathPxy = nil
+	AppPxy = nil
 }

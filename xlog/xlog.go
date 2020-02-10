@@ -10,7 +10,6 @@ package xlog
 
 import (
 	"fmt"
-	. "github.com/showgo/model"
 	"github.com/showgo/timeutil"
 	"github.com/showgo/xutil"
 	"io"
@@ -57,12 +56,6 @@ func NewXlog(info *LogInitModel) bool {
 	_xlog.initInfo = info
 	loglvlStrMap = make(map[int16]string)
 	initXlog()
-	// 这里需要创建日志目录
-	isOk := xutil.MakeDir(info.LogsPath)
-	if !isOk {
-		fmt.Errorf("_NewXlog xlog is nil")
-		return false
-	}
 	go _xlog.run()
 	return true
 }
@@ -129,7 +122,7 @@ func (xl *Xlog) writeLogToFile(lm *LogModel) {
 // 创建日志日期路径
 func (xl *Xlog) NewLogsDir(currentNano int64) bool {
 	dirs := path.Join(xl.initInfo.LogsPath, timeutil.GetYearMonthDayFromatStr(currentNano))
-	return xutil.MakeDir(dirs)
+	return xutil.MakeDirAll(dirs)
 }
 
 func (xl *Xlog) NewLogFile(currentNano int64, scenename string) bool {
@@ -147,7 +140,7 @@ func (xl *Xlog) NewLogFile(currentNano int64, scenename string) bool {
 func (xl *Xlog) setOutFile() {
 	if xl.writeFile == nil {
 		xl.baseLog.SetOutput(os.Stdout)
-	} else if _xlog.initInfo.IsOutStd && xl.writeFile != nil {
+	} else if xl.initInfo.IsOutStd && xl.writeFile != nil {
 		xl.baseLog.SetOutput(io.MultiWriter(os.Stdout, xl.writeFile))
 	} else {
 		xl.baseLog.SetOutput(xl.writeFile)

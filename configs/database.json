@@ -2,21 +2,21 @@
   {
     "ip": "127.0.0.1",
     "dbport": "3306",
-    "dbname": "wode",
+    "dbname": "logdb",
     "dbusername": "zjy",
     "dbpwd": "zjy0822"
   },
   {
     "ip": "127.0.0.1",
     "dbport": "3306",
-    "dbname": "wod2",
+    "dbname": "gamedb",
     "dbusername": "zjy",
     "dbpwd": "zjy0822"
   },
   {
     "ip": "127.0.0.1",
     "dbport": "3306",
-    "dbname": "wod2",
+    "dbname": "logindb",
     "dbusername": "zjy",
     "dbpwd": "zjy0822"
   }

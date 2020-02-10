@@ -7,7 +7,9 @@
 
 package proxy
 
-import "path"
+import (
+	"path"
+)
 
 type PathProxy struct {
 	AppRootPath string //  程序(main)根路径
@@ -24,20 +26,18 @@ func NewPathProxy() *PathProxy {
 }
 
 // 路径管理相关函数
-func (pthpro *PathProxy) SetAppPath(pwd string) {
+func (pthpro *PathProxy) SetAppPath(pwd string ) {
 	pthpro.AppRootPath = pwd
-	pthpro.InitProxy()
 }
 
 func (pthpro *PathProxy) InitProxy() {
 	pthpro.ConfPath = path.Join(pthpro.AppRootPath, "configs")
-	pthpro.CsvPath = path.Join(pthpro.LogsPath, "csv")
-	pthpro.LogsPath = path.Join(pthpro.CsvPath, "logs")
-	pthpro.ConfIniPath = path.Join(pthpro.ConfPath, AppPxy.AppInfo.AppKindArg.ToString()+".ini")
-	pthpro.DBJsonFile = path.Join(pthpro.ConfIniPath,"database.json")
+	pthpro.CsvPath = path.Join(pthpro.AppRootPath, "csv")
+	pthpro.LogsPath = path.Join(pthpro.AppRootPath, "logs")
+	pthpro.ConfIniPath = path.Join(pthpro.AppRootPath, AppPxy.AppServerName+".ini")
+	pthpro.DBJsonFile = path.Join(pthpro.ConfIniPath, "database.json")
 }
 
 func (pxy *PathProxy) RealseProxy() {
 
 }
-

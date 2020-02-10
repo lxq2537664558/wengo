@@ -33,36 +33,7 @@ func (pxy *ConfigProxy) RealseProxy() {
 
 }
 
-func (sc *ConfigProxy)InitConf() bool{
-	sc.readConfig()
-	return  true
-}
 
-func (sc *ConfigProxy)readConfig()  {
-	dbconffilePtr, err := os.Open(GetDBJsonFile())
-	if err != nil {
-		fmt.Println("Open file failed [Err:%s]", err.Error())
-		return
-	}
-	defer dbconffilePtr.Close()
-	// 创建json解码器
-	errs := json.NewDecoder(dbconffilePtr).Decode(&ConfigPxy.Dbs)
-	if errs != nil {
-		fmt.Println("Decoder failed", errs.Error())
-	} else {
-		fmt.Println("Decoder success")
-		fmt.Println("解析结构体 =%+v",ConfigPxy.Dbs)
-	}
-}
-
-
-func (sc *ConfigProxy)readIni()  {
-	sc.conf = goini.SetConfig(GetConfingsPath() + "\\" + GetConfigFileName())
-	sc.conf.ReadList()
-}
-func (sc *ConfigProxy)readDataBase()  {
-
-}
 
 func (sc *ConfigProxy)LoadConf()  {
 

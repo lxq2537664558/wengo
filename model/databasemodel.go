@@ -12,10 +12,5 @@ type DataBaseModel struct {
 	DBpwd      string      `json:dbpwd`// 密码
 }
 
-type DataBaseInfos struct {
-	Dbs  []DataBaseModel
-}
 
-func NewDataBaseInfos() *DataBaseInfos {
-	return &DataBaseInfos{}
-}
+

@@ -9,8 +9,7 @@ type AppInfoModel struct {
 	FPS         int     // 多少帧每秒
 	IsActivity  bool    // 是否存活
 	AppId       int32   // appID标识
-	AppKindArg  AppKind // app类型 通过外部传递参数确定
-	AppKindName string  // app名称
+
 }
 
 // app 的网络信息

@@ -7,3 +7,8 @@
 
 package app
 
+import (
+	"github.com/showgo/model"
+	"sync"
+)
+

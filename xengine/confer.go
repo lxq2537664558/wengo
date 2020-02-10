@@ -7,8 +7,6 @@ package xengine
 
 type Confer interface {
 	InitConf() bool
-	// 加载配置文件
-	LoadConf()
-	// 重新加载配置文件
-	Reload()
+	LoadConf() bool// 加载配置文件
+	Reload()  // 重新加载配置文件
 }

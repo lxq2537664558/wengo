@@ -8,13 +8,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/showgo/model"
-	"github.com/showgo/xlog"
+	"github.com/showgo/app"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
-	"time"
 )
 
 // main 初始化工作
@@ -24,36 +22,13 @@ func init() {
 // 各服务器主入口
 func main() {
 	
-	logInit := model.LogInitModel{
-		"Login",
-		"./logs",
-		model.RestLogModel{
-			10,
-			true,
-			7,
-		},
-	}
-	
-	isOK :=  xlog.NewXlog(logInit)
-	if !isOK {
-		return
-	}
+
 	// 设置最大运行核数
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	for i := 1; i <= 10 ; i++ {
-		go func(a int) {
-			xlog.WarningLog("main ","gocorutine %d ",a)
-			xlog.DebugLog("main ","gocorutine %d",a)
-			xlog.ErrorLog("main ","gocorutine %d",a)
-		}(i)
-	}
+	app.GetStart()
 	
-	time.Sleep(time.Second * 10)
-	xlog.CloseLog(xlog.CloseType_nomarl)
-	time.Sleep(time.Second * 10)
-	// app.GetStart()
 	// 等待退出 在app 退出后整个程序退出
-	fmt.Println("Main Exit")
+	
 }
 
 func signalListen() {

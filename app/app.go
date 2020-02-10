@@ -6,33 +6,37 @@
 package app
 
 import (
+	"github.com/showgo/model"
 	."github.com/showgo/proxy"
+	"github.com/showgo/xengine"
+	"github.com/showgo/xglobal"
 	"github.com/showgo/xlog"
 )
 
 var (
-	appBehavior AppBehavior
+	EndFlag     *model.AtomicInt32FlagModel
+	appBehavior xengine.AppBehavior
 )
-
-func G() {
-	if err := recover(); err != nil {
-		xlog.ErrorLogInterfaceParam(err)
-	}
-}
-
-
-
 
 // 逻辑app 主要工作线程
 func AppRun() {
+	defer xglobal.Grecover()
 	defer AppPxy.AppWG.Done()
-	for AppPxy.EndFlag.IsOpen() {
+	for EndFlag.IsOpen() {
 		appBehavior.RunApp() // 运行app 逻辑
 	}
+	onCloseApp()
 }
 
 // 关闭app 程序
 func CloseApp() {
-	// 进程结束
-	appBehavior.QuitApp()
+	EndFlag.Close()
+}
+
+// 执行关闭
+func onCloseApp() {
+	appBehavior.QuitApp()                // 进程结束
+	xlog.CloseLog(xlog.CloseType_nomarl) // 退出日志
+	
+	RealseProxy()
 }

@@ -3,9 +3,10 @@
 作者: zjy
 功能介绍:
 log 相关 数据类型定义
+这个文件不放在model是因为,模块内的东西尽量放在一起
 */
 
-package model
+package xlog
 
 type VolatileLogModel struct {
 	LogQueueCap int   // 日志队列大小
