@@ -7,8 +7,9 @@
 
 package xengine
 
-
 type  AppFactory interface {
 	CreateAppBehavor() AppBehavior
-	CreateConfer() Confer
+	// CreateConfer() Confer
 }
+
+

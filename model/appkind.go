@@ -12,7 +12,7 @@ const (
 	APP_NONE        AppKind = 0 // 无类型
 	APP_Client              = 1 // 客户端
 	APP_LoginServer         = 2 // 登陆服
-	APP_GameServer          = 3 // 游戏服
+	APP_GameServer          = 3 // 游戏服 各种场景处理
 	APP_MsgServer           = 4 // 聊天服
 	APP_WorldServer         = 5 // 世界服
 )

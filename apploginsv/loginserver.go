@@ -8,22 +8,22 @@
 package apploginsv
 
 import (
+	"github.com/showgo/csvdata"
 	"github.com/showgo/model"
-	."github.com/showgo/proxy"
-	"github.com/showgo/xengine"
+	"github.com/showgo/xlog"
 )
 
 type LogionServer struct {
 	NetWorkInfo  *model.AppNetWorkModel // 服务器网络信息
 	AppInfo      *model.AppInfoModel    // 服务器信息
-	confer       xengine.Confer
 }
 
 
 // 程序启动
 func (ls *LogionServer)StartApp() {
-	ls.confer = AppPxy.AppFactory.CreateConfer()
-	ls.confer.InitConf()
+	csvdata.InitLoginCsvData()
+	// tcpserver := new(network.TCPServer)
+	// tcpserver.Start()
 }
 
 //初始化
@@ -33,7 +33,7 @@ func (ls *LogionServer)InitApp() bool{
 }
 // 程序运行
 func (ls *LogionServer)RunApp(){
-
+   xlog.DebugLog("","Run LoginApp")
 }
 // 关闭
 func (ls *LogionServer)QuitApp(){

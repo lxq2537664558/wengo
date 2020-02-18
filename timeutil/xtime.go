@@ -68,7 +68,7 @@ func GetYearMonthDayFromatStr(timeNano int64) string {
 }
 func GetYearMonthDayHourFromatStr(timeNano int64) string {
 	nowTime := time.Unix(0,timeNano)
-	datestr := fmt.Sprintf("%d%02d%02d_%02d",
+	datestr := fmt.Sprintf("%d%02d%02d_%2d",
 		nowTime.Year(),
 		nowTime.Month(),
 		nowTime.Day(),

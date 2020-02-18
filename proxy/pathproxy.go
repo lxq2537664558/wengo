@@ -17,12 +17,11 @@ type PathProxy struct {
 	LogsPath    string
 	ConfPath    string
 	ConfIniPath string
-	DBJsonFile  string
 }
 
 // 创建AppProxy
 func NewPathProxy() *PathProxy {
-	return &PathProxy{}
+	return new(PathProxy)
 }
 
 // 路径管理相关函数
@@ -34,8 +33,7 @@ func (pthpro *PathProxy) InitProxy() {
 	pthpro.ConfPath = path.Join(pthpro.AppRootPath, "configs")
 	pthpro.CsvPath = path.Join(pthpro.AppRootPath, "csv")
 	pthpro.LogsPath = path.Join(pthpro.AppRootPath, "logs")
-	pthpro.ConfIniPath = path.Join(pthpro.AppRootPath, AppPxy.AppServerName+".ini")
-	pthpro.DBJsonFile = path.Join(pthpro.ConfIniPath, "database.json")
+	pthpro.ConfIniPath = path.Join(pthpro.ConfPath, "serverinfo.ini")
 }
 
 func (pxy *PathProxy) RealseProxy() {

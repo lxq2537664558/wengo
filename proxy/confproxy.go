@@ -8,37 +8,31 @@
 package proxy
 
 import (
-	"encoding/json"
-	"fmt"
-	"path"
-	"os"
-	"github.com/widuu/goini"
-	."github.com/showgo/model"
 	_"github.com/showgo/xengine"
 )
 
-type ConfigProxy struct {
-	conf *goini.Config
-	Dbs  []DataBaseModel
-}
-
-// 创建server对象
-func NewConfigProxy() Confer {
-	return &ConfigProxy{}
-}
-func (pthpro *ConfigProxy) InitProxy() {
-
-}
-func (pxy *ConfigProxy) RealseProxy() {
-
-}
-
-
-
-func (sc *ConfigProxy)LoadConf()  {
-
-}
-
-func (sc *ConfigProxy)Reload()  {
-	sc.LoadConf()
-}
+// type ConfigProxy struct {
+// 	conf *goini.Config
+// 	Dbs  []DataBaseModel
+// }
+//
+// // 创建server对象
+// func NewConfigProxy() Confer {
+// 	return &ConfigProxy{}
+// }
+// func (pthpro *ConfigProxy) InitProxy() {
+//
+// }
+// func (pxy *ConfigProxy) RealseProxy() {
+//
+// }
+//
+//
+//
+// func (sc *ConfigProxy)LoadConf()  {
+//
+// }
+//
+// func (sc *ConfigProxy)Reload()  {
+// 	sc.LoadConf()
+// }

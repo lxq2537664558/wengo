@@ -13,11 +13,13 @@ import (
 	"path"
 	"runtime"
 	"strings"
-	"github.com/showgo/conf"
 )
 
 
 func MakeDirAll(dir string) bool{
+	if  StringIsNil(dir) { // 路径为nil不能创建
+		return  false
+	}
 	exists,err := PathExists(dir)
 	if !exists {
 		if err != nil {
@@ -74,9 +76,9 @@ func ValidArrIndex(arr interface{},index int) bool  {
 //是否错误，有错返回 true无错返回false
 func IsError(err error) bool  {
 	if  err != nil {
-		buf := make([]byte, conf.LenStackBuf)
+		buf := make([]byte, 4096)
 		l := runtime.Stack(buf, false)
-		fmt.Printf("%v %s", err, buf[:l])
+		fmt.Printf("%v \n%s", err, buf[:l])
 		return true
 	}
 	return  false

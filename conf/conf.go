@@ -7,7 +7,33 @@
 
 package conf
 
+import (
+	"github.com/showgo/xlog"
+	"github.com/widuu/goini"
+	"strconv"
+)
 
 var (
-	LenStackBuf = 4096
+
+	conf          *goini.Config
+	VolatileModel xlog.VolatileLogModel
 )
+
+
+func ReadIni(iniPath string)  {
+	conf = goini.SetConfig(iniPath)
+	conf.ReadList()
+	tem, isok := strconv.Atoi(conf.GetValue("LogConf", "LogQueueCap"))
+	if isok == nil {
+		VolatileModel.LogQueueCap = tem
+	}
+	tem, isok = strconv.Atoi(conf.GetValue("LogConf", "ShowLvl"))
+	if isok == nil {
+		VolatileModel.ShowLvl = int16(tem)
+	}
+	isOutStd, isok := strconv.ParseBool(conf.GetValue("LogConf", "IsOutStd"))
+	if isok == nil {
+		VolatileModel.IsOutStd = isOutStd
+	}
+
+}

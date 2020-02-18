@@ -2,11 +2,12 @@
 package csvdata
 
 import (
+	"fmt"
 	"github.com/showgo/csvparse"
 	"github.com/showgo/xutil"
 )
 
-var ServerconfCsv map[int]*Serverconf
+var serverconfCsv map[int]*Serverconf
 
 type  Serverconf struct {
 	ServerId int //#服务器id 字段名称  ServerId
@@ -19,28 +20,34 @@ type  Serverconf struct {
 	RecMaxsize int //收包最大字节 字段名称  RecMaxsize
 }
 
-func AsynSetServerconfCsvMapData() {
-	 go SetServerconfCsvMapData()
-}
-
-func SetServerconfCsvMapData() {
-    if ServerconfCsv == nil {
-		ServerconfCsv = make(map[int]*Serverconf)
+func SetServerconfMapData(csvpath  string ) {
+    if serverconfCsv == nil {
+		serverconfCsv = make(map[int]*Serverconf)
 	}
-	tem := getServerconfCsvUsedData("./csv/")
-	ServerconfCsv  = tem
+	tem := getServerconfUsedData(csvpath)
+	serverconfCsv  = tem
 }
 
-func getServerconfCsvUsedData(csvpath  string ) map[int]*Serverconf{
-    csvmapdata := csvparse.GetCsvMapData(csvpath + "serverconf.csv")
+func getServerconfUsedData(csvpath  string ) map[int]*Serverconf{
+    csvmapdata := csvparse.GetCsvMapData(csvpath + "/serverconf.csv")
 	tem := make(map[int]*Serverconf)
 	for _, filedData := range csvmapdata {
 		one := new(Serverconf)
 		for filedName, filedval := range filedData {
 			isok := csvparse.SetFieldReflect(one, filedName, filedval)
 			xutil.IsError(isok)
+			if _,ok := tem[one.ServerId]; ok {
+				fmt.Println(one.ServerId,"重复")
+			}
 		}
 		tem[one.ServerId] = one
 	}
 	return tem
+}
+
+func GetServerconfPtr(ServerId int) *Serverconf{
+    if _,ok := serverconfCsv[ServerId]; !ok  {
+		return nil
+	}
+	return serverconfCsv[ServerId]
 }

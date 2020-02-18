@@ -6,10 +6,10 @@
 package app
 
 import (
+	"github.com/showgo/apploginsv"
 	"github.com/showgo/model"
-	."github.com/showgo/proxy"
+	"github.com/showgo/proxy"
 	"github.com/showgo/xengine"
-	"github.com/showgo/xglobal"
 	"github.com/showgo/xlog"
 )
 
@@ -20,8 +20,8 @@ var (
 
 // 逻辑app 主要工作线程
 func AppRun() {
-	defer xglobal.Grecover()
-	defer AppPxy.AppWG.Done()
+	defer xlog.GrecoverToLog()
+	defer proxy.AppWG.Done()
 	for EndFlag.IsOpen() {
 		appBehavior.RunApp() // 运行app 逻辑
 	}
@@ -38,5 +38,27 @@ func onCloseApp() {
 	appBehavior.QuitApp()                // 进程结束
 	xlog.CloseLog(xlog.CloseType_nomarl) // 退出日志
 	
-	RealseProxy()
+	proxy.RealseProxy()
 }
+
+
+// app 逻辑参数根据服务器启动的参数创建对应的服务器工厂
+func NewAppFactory(svKind model.AppKind) xengine.AppFactory {
+	switch svKind {
+	case model.APP_NONE:
+		return nil
+	case model.APP_Client:
+		return nil
+	case model.APP_LoginServer: // 工厂
+		return new(apploginsv.LoginServerFactory)
+	case model.APP_GameServer:
+		return nil
+	case model.APP_MsgServer:
+		return nil
+	case model.APP_WorldServer:
+		return nil
+	default:
+		return nil
+	}
+}
+

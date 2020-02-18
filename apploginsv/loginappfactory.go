@@ -23,6 +23,3 @@ func (lsf *LoginServerFactory)CreateAppBehavor() xengine.AppBehavior {
      return  new(LogionServer)
 }
 
-func (lsf *LoginServerFactory)CreateConfer() xengine.Confer {
-     return  new(LoginConfer)
-}
