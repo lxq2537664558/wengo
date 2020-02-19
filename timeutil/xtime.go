@@ -75,6 +75,30 @@ func GetYearMonthDayHourFromatStr(timeNano int64) string {
 		nowTime.Hour())
 	return datestr
 }
+// 获取时间间隔的字符串
+func GetYearMonthDayHourFromatStrBySpan(timeNano int64,span int) string {
+	nowTime := time.Unix(0,timeNano)
+	hour := nowTime.Hour()
+	switch span {
+	case 2,3,4,5,6,9,12,24: //日志间隔
+		if !IsSpanTime(hour,span) {
+			hour -= (hour % span)
+		}
+	default:
+	
+	}
+	
+	datestr := fmt.Sprintf("%d%02d%02d_%d",
+		nowTime.Year(),
+		nowTime.Month(),
+		nowTime.Day(),
+		hour)
+	return datestr
+}
+
+func IsSpanTime(hour,span int) bool  {
+	return  hour % span == 0
+}
 
 func GetDateFileName(timeNano int64) string {
 	return getTimeStr(timeNano,FileTemplateDate)
