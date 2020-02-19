@@ -29,11 +29,14 @@ func ReadIni(iniPath string)  {
 	}
 	tem, isok = strconv.Atoi(conf.GetValue("LogConf", "ShowLvl"))
 	if isok == nil {
-		VolatileModel.ShowLvl = int16(tem)
+		VolatileModel.ShowLvl = uint16(tem)
 	}
 	isOutStd, isok := strconv.ParseBool(conf.GetValue("LogConf", "IsOutStd"))
 	if isok == nil {
 		VolatileModel.IsOutStd = isOutStd
 	}
-
+	tem, isok = strconv.Atoi(conf.GetValue("LogConf", "FileTimeSpan"))
+	if isok == nil {
+		VolatileModel.FileTimeSpan = tem
+	}
 }

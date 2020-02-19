@@ -75,9 +75,9 @@ func initLog() {
 	logInit := &xlog.LogInitModel{
 		ServerName:proxy.SvConf.ServerName,
 		LogsPath:proxy.PathPxy.LogsPath,
+		Volatile:conf.VolatileModel,
 	}
 	xlog.NewXlog(logInit)
-	xlog.SetShowLogAndStartLog(conf.VolatileModel)
 }
 
 
