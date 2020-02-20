@@ -8,27 +8,81 @@
 package proxy
 
 import (
+	"github.com/showgo/conf"
 	"github.com/showgo/csvdata"
 	"github.com/showgo/model"
 	"github.com/showgo/xengine"
+	"os"
 	"sync"
 )
 
 var (
-	AppFactory    xengine.AppFactory
-	AppWG         sync.WaitGroup      // app进程结束标志
-	SvConf        *csvdata.Serverconf // 服务器配置
-	AppKindArg    model.AppKind       // app类型 通过外部传递参数确定
-	SververID     int    //serverId
+	PathModelPtr *model.PathModel    //最先有路径对象
+	SververID    int                 //serverId
+	SvConf       *csvdata.Serverconf // 服务器配置
+	appKind      model.AppKind       // app类型 通过外部传递参数确定
+	AppFactory   xengine.AppFactory
+	AppWG        sync.WaitGroup      // app进程结束标志
 )
 
+
+func init() {
+	createProxy()
+}
+
+// 创建代理对象
+func createProxy()  {
+	//创建对象在前
+	PathModelPtr = model.NewPathModel()
+}
+
+//初始化代理对象
+func InitProxy()  {
+	SetAppPath()// 获取当前路径程序执行路径
+	conf.ReadIni(PathModelPtr.ConfIniPath)
+}
+
+//设置app程序路径
+func SetAppPath() {
+	if PathModelPtr == nil {
+		return
+	}
+	pwd, _ := os.Getwd()
+	PathModelPtr.SetRootPath(pwd)
+	PathModelPtr.InitPathModel()
+}
+
+
 func InitKind()  {
-	AppKindArg = model.ItoAppKind(SvConf.ServerType)
+	appKind = model.ItoAppKind(SvConf.Server_kind)
+}
+
+func GetAppKind()  model.AppKind {
+	return appKind
 }
 
 // App 相关数据存放
 func InitAppData(appFactory  xengine.AppFactory) {
 	AppFactory = appFactory
+}
+
+func RealseProxy()  {
+	//创建对象在前
+	PathModelPtr = nil
+}
+
+func GetSecenName() string  {
+	switch appKind {
+	//gameserver需要区分场景
+	case model.APP_GameServer:
+		return SvConf.Server_name
+	//这些服务器器都没有场景名称
+	// case model.APP_NONE,model.APP_Client,model.APP_MsgServer,model.APP_WorldServer:
+	// 	return ""
+	default:
+		return ""
+	}
+	return  ""
 }
 
 

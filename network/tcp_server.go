@@ -1,10 +1,11 @@
 package network
 
 import (
+	"github.com/showgo/proxy"
+	"github.com/showgo/xlog"
 	"net"
 	"sync"
 	"time"
-	log "github.com/sirupsen/logrus"
 )
 
 type TCPServer struct {
@@ -34,19 +35,19 @@ func (server *TCPServer) Start() {
 func (server *TCPServer) init() {
 	ln, err := net.Listen("tcp", server.Addr)
 	if err != nil {
-		log.Fatal("%v", err)
+		xlog.DebugLog(proxy.GetSecenName(),"%v", err)
 	}
 
 	if server.MaxConnNum <= 0 {
 		server.MaxConnNum = 100
-		log.Fatal("invalid MaxConnNum, reset to %v", server.MaxConnNum)
+		xlog.WarningLog(proxy.GetSecenName(),"invalid MaxConnNum, reset to %v", server.MaxConnNum)
 	}
 	if server.PendingWriteNum <= 0 {
 		server.PendingWriteNum = 100
-		log.Fatal("invalid PendingWriteNum, reset to %v", server.PendingWriteNum)
+		xlog.WarningLog(proxy.GetSecenName(),"invalid PendingWriteNum, reset to %v", server.PendingWriteNum)
 	}
 	if server.NewAgent == nil {
-		log.Fatal("NewAgent must not be nil")
+		xlog.WarningLog(proxy.GetSecenName(),"NewAgent must not be nil")
 	}
 
 	server.ln = ln
@@ -76,7 +77,7 @@ func (server *TCPServer) run() {
 				if max := 1 * time.Second; tempDelay > max {
 					tempDelay = max
 				}
-				log.Error("accept error: %v; retrying in %v", err, tempDelay)
+				xlog.ErrorLog(proxy.GetSecenName(),"accept error: %v; retrying in %v", err, tempDelay)
 				time.Sleep(tempDelay)
 				continue
 			}
@@ -88,7 +89,7 @@ func (server *TCPServer) run() {
 		if len(server.conns) >= server.MaxConnNum {
 			server.mutexConns.Unlock()
 			conn.Close()
-			log.Debug("too many connections")
+			xlog.WarningLog(proxy.GetSecenName(),"too many connections")
 			continue
 		}
 		server.conns[conn] = struct{}{}

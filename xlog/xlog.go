@@ -16,6 +16,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"sync"
 )
 
 const (
@@ -33,6 +34,7 @@ const (
 var (
 	_xlog        *Xlog // 日志执行者对象
 	loglvlStrMap map[uint16]string
+	_wg  *sync.WaitGroup //为保证程序统一退出这里加个等待
 )
 
 type Xlog struct {
@@ -44,7 +46,7 @@ type Xlog struct {
 }
 
 // 创建日志对象
-func NewXlog(info *LogInitModel) bool {
+func NewXlog(info *LogInitModel,wg  *sync.WaitGroup) bool {
 	_xlog = new(Xlog)
 	if _xlog == nil {
 		fmt.Println("_NewXlog xlog is nil")
@@ -56,6 +58,8 @@ func NewXlog(info *LogInitModel) bool {
 	_xlog.initInfo = info
 	loglvlStrMap = make(map[uint16]string)
 	initXlog()
+	_wg = wg
+	_wg.Add(1)
 	go _xlog.run()
 	return true
 }
@@ -164,9 +168,13 @@ func (xl *Xlog) setOutPrefix(reqlvl uint16,currentNano int64) {
 
 // 日志执行逻辑线程
 func (xl *Xlog) run() {
+	
+	if _wg != nil {
+		defer _wg.Done()
+	}
 	// 拉起宕机
 	defer GrecoverToStd()
-
+	
 ENDLOOP:
 	for {
 		select {

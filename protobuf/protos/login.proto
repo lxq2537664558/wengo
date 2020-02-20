@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "./login_proto";
+
+package login_proto;
+
+
+//手机
+message Phone {
+    int32 type = 1;
+    string number = 2;
+}
+ 
+//人
+message Person {
+    //后面的数字表示标识号
+    int32 id = 1;
+    string name = 2;
+    //repeated表示可重复
+    //可以有多个手机
+   repeated Phone phones = 3;
+}

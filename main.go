@@ -21,14 +21,10 @@ func init() {
 
 // 各服务器主入口
 func main() {
-	
-
 	// 设置最大运行核数
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	app.GetStart()
-	
+	app.GetAppStart()
 	// 等待退出 在app 退出后整个程序退出
-	
 }
 
 func signalListen() {

@@ -7,25 +7,25 @@ import (
 	"github.com/showgo/xutil"
 )
 
-var serverconfCsv map[int]*Serverconf
+var ServerconfCsv map[int]*Serverconf
 
 type  Serverconf struct {
-	ServerId int //#服务器id 字段名称  ServerId
-	ServerType int //服务器类型 字段名称  ServerType
-	ServerName string //服务器名称 字段名称  ServerName
-	OutAddr string //外部连接的地址 字段名称  OutAddr
-	OutPort string //外部连接端口 字段名称  OutPort
-	MaxConnect int //最大连接数 字段名称  MaxConnect
-	SendMaxsize int //发包最大数量 字段名称  SendMaxsize
-	RecMaxsize int //收包最大字节 字段名称  RecMaxsize
+	Server_id int //#服务器id 字段名称  server_id
+	Server_kind int //服务器类型 字段名称  server_kind
+	Server_name string //服务器名称 字段名称  server_name
+	Out_addr string //外部连接的地址 字段名称  out_addr
+	Out_prot string //外部连接端口 字段名称  out_prot
+	Max_connect int //最大连接数 字段名称  max_connect
+	Send_maxsize int //发包最大数量 字段名称  send_maxsize
+	Rec_maxsize int //收包最大字节 字段名称  rec_maxsize
 }
 
 func SetServerconfMapData(csvpath  string ) {
-    if serverconfCsv == nil {
-		serverconfCsv = make(map[int]*Serverconf)
+    if ServerconfCsv == nil {
+		ServerconfCsv = make(map[int]*Serverconf)
 	}
 	tem := getServerconfUsedData(csvpath)
-	serverconfCsv  = tem
+	ServerconfCsv  = tem
 }
 
 func getServerconfUsedData(csvpath  string ) map[int]*Serverconf{
@@ -34,20 +34,21 @@ func getServerconfUsedData(csvpath  string ) map[int]*Serverconf{
 	for _, filedData := range csvmapdata {
 		one := new(Serverconf)
 		for filedName, filedval := range filedData {
-			isok := csvparse.SetFieldReflect(one, filedName, filedval)
+			isok := csvparse.ReflectSetField(one, filedName, filedval)
 			xutil.IsError(isok)
-			if _,ok := tem[one.ServerId]; ok {
-				fmt.Println(one.ServerId,"重复")
+			if _,ok := tem[one.Server_id]; ok {
+				fmt.Println(one.Server_id,"重复")
 			}
 		}
-		tem[one.ServerId] = one
+		tem[one.Server_id] = one
 	}
 	return tem
 }
 
-func GetServerconfPtr(ServerId int) *Serverconf{
-    if _,ok := serverconfCsv[ServerId]; !ok  {
+func GetServerconfPtr(server_id int) *Serverconf{
+    data, ok := ServerconfCsv[server_id];
+	if  !ok  {
 		return nil
 	}
-	return serverconfCsv[ServerId]
+	return data
 }

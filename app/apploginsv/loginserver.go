@@ -10,7 +10,7 @@ package apploginsv
 import (
 	"github.com/showgo/csvdata"
 	"github.com/showgo/model"
-	"github.com/showgo/xlog"
+	"github.com/showgo/network"
 )
 
 type LogionServer struct {
@@ -20,22 +20,22 @@ type LogionServer struct {
 
 
 // 程序启动
-func (ls *LogionServer)StartApp() {
+func (ls *LogionServer)OnStart() {
 	csvdata.InitLoginCsvData()
-	// tcpserver := new(network.TCPServer)
-	// tcpserver.Start()
+	tcpserver := new(network.TCPServer)
+	tcpserver.Start()
 }
 
 //初始化
-func (ls *LogionServer)InitApp() bool{
+func (ls *LogionServer)OnInit(params interface{}) bool{
 
 	return true
 }
 // 程序运行
-func (ls *LogionServer)RunApp(){
-   xlog.DebugLog("","Run LoginApp")
+func (ls *LogionServer)OnUpdate(){
+   // xlog.DebugLog("","Run LoginApp")
 }
 // 关闭
-func (ls *LogionServer)QuitApp(){
+func (ls *LogionServer)OnRelease(){
 
 }

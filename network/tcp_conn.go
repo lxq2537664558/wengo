@@ -1,6 +1,8 @@
 package network
 
 import (
+	"github.com/showgo/proxy"
+	"github.com/showgo/xlog"
 	"net"
 	"sync"
 )
@@ -72,7 +74,7 @@ func (tcpConn *TCPConn) Close() {
 
 func (tcpConn *TCPConn) doWrite(b []byte) {
 	if len(tcpConn.writeChan) == cap(tcpConn.writeChan) {
-		log.Debug("close conn: channel full")
+		xlog.DebugLog(proxy.GetSecenName(),"close conn: channel full")
 		tcpConn.doDestroy()
 		return
 	}

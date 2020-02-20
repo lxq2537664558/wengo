@@ -8,7 +8,7 @@
 package csvdata
 
 import (
-	"github.com/showgo/xlog"
+	"fmt"
 	"github.com/showgo/xutil"
 )
 
@@ -16,7 +16,7 @@ var csvPath string
 
 func SetCsvPath(csvpath string)  {
 	if xutil.StringIsNil(csvpath) {
-		xlog.ErrorLog("app","csvpath is nil")
+		fmt.Println("csvpath is nil")
 	}
 	csvPath  = csvpath
 }

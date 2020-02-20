@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "./common_proto";
+
+package common_proto;
+
+
+//手机
+message test {
+	int32 type = 1;
+    string number = 2;
+}
+ 

@@ -19,6 +19,10 @@ const
 	OpenFlag = 1
 )
 
+func NewAtomicInt32Flag() *AtomicInt32FlagModel {
+	return new(AtomicInt32FlagModel)
+}
+
 // 检测是否开启
 func (af *AtomicInt32FlagModel) IsOpen() bool {
 	return atomic.LoadInt32(&af.checkFlag) == OpenFlag

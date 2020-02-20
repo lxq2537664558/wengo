@@ -50,6 +50,7 @@ func GetCsvSliceData(csvfile string) [][]string {
 	if xutil.IsError(err) {
 		return nil
 	}
+	defer fs.Close() //这里关闭文件
 	csvReader := csv.NewReader(fs)
 	if csvReader == nil {
 		return nil
@@ -119,7 +120,7 @@ func StringsToIntArr(str string) []int {
 // param obj 需要设置的结构体 这里必须是引用类型,可以取地址的
 // param name 结构体字段名称
 // param value 给结构体设置的值
-func SetFieldReflect(obj interface{}, name string, value interface{}) error {
+func ReflectSetField(obj interface{}, name string, value interface{}) error {
 	if obj == nil {
 		return fmt.Errorf("obj is nil", name)
 	}

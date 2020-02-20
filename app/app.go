@@ -6,7 +6,8 @@
 package app
 
 import (
-	"github.com/showgo/apploginsv"
+	"fmt"
+	"github.com/showgo/app/apploginsv"
 	"github.com/showgo/model"
 	"github.com/showgo/proxy"
 	"github.com/showgo/xengine"
@@ -15,7 +16,7 @@ import (
 
 var (
 	EndFlag     *model.AtomicInt32FlagModel
-	appBehavior xengine.AppBehavior
+	appBehavior xengine.ServerBehavior
 )
 
 // 逻辑app 主要工作线程
@@ -23,9 +24,15 @@ func AppRun() {
 	defer xlog.GrecoverToLog()
 	defer proxy.AppWG.Done()
 	for EndFlag.IsOpen() {
-		appBehavior.RunApp() // 运行app 逻辑
+		appBehavior.OnUpdate() // 运行app 逻辑
 	}
 	onCloseApp()
+}
+
+// 设置启动标志位
+func SetAppOpen()  {
+	EndFlag = model.NewAtomicInt32Flag()
+	EndFlag.Open()
 }
 
 // 关闭app 程序
@@ -35,12 +42,11 @@ func CloseApp() {
 
 // 执行关闭
 func onCloseApp() {
-	appBehavior.QuitApp()                // 进程结束
-	xlog.CloseLog(xlog.CloseType_nomarl) // 退出日志
-	
+	appBehavior.OnRelease()                // 进程结束
 	proxy.RealseProxy()
+	xlog.CloseLog(xlog.CloseType_nomarl) // 退出日志
+	fmt.Println("App Close")
 }
-
 
 // app 逻辑参数根据服务器启动的参数创建对应的服务器工厂
 func NewAppFactory(svKind model.AppKind) xengine.AppFactory {

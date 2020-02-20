@@ -5,13 +5,13 @@
 路径相关管理
 */
 
-package proxy
+package model
 
 import (
 	"path"
 )
 
-type PathProxy struct {
+type PathModel struct {
 	AppRootPath string //  程序(main)根路径
 	CsvPath     string
 	LogsPath    string
@@ -19,23 +19,20 @@ type PathProxy struct {
 	ConfIniPath string
 }
 
-// 创建AppProxy
-func NewPathProxy() *PathProxy {
-	return new(PathProxy)
+// 创建PathModel
+func NewPathModel() *PathModel {
+	return new(PathModel)
 }
 
 // 路径管理相关函数
-func (pthpro *PathProxy) SetAppPath(pwd string ) {
+func (pthpro *PathModel) SetRootPath(pwd string ) {
 	pthpro.AppRootPath = pwd
 }
 
-func (pthpro *PathProxy) InitProxy() {
+func (pthpro *PathModel) InitPathModel() {
 	pthpro.ConfPath = path.Join(pthpro.AppRootPath, "configs")
 	pthpro.CsvPath = path.Join(pthpro.AppRootPath, "csv")
 	pthpro.LogsPath = path.Join(pthpro.AppRootPath, "logs")
 	pthpro.ConfIniPath = path.Join(pthpro.ConfPath, "serverinfo.ini")
 }
 
-func (pxy *PathProxy) RealseProxy() {
-
-}

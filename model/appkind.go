@@ -16,7 +16,26 @@ const (
 	APP_MsgServer           = 4 // 聊天服
 	APP_WorldServer         = 5 // 世界服
 )
-var AppNames = [...]string{
+
+
+var kindArr  =[...]AppKind{
+	APP_NONE,
+	APP_Client,
+	APP_LoginServer,
+	APP_GameServer,
+	APP_MsgServer,
+	APP_WorldServer,
+}
+
+// 整数变为AppKind
+func ItoAppKind(val int) AppKind {
+	if val >= 0 && val < len(kindArr) {
+		return kindArr[val]
+	}
+	return APP_NONE
+}
+
+var appNames = [...]string{
 	"none",
 	"client",
 	"loginsv",
@@ -24,30 +43,9 @@ var AppNames = [...]string{
 	"msgsv",
 	"worldsv",
 }
-
-// 整数变为AppKind
-func ItoAppKind(val int) AppKind {
-	switch (val) {
-	case 0:
-		return APP_NONE
-	case 1:
-		return APP_Client
-	case 2:
-		return APP_LoginServer
-	case 3:
-		return APP_GameServer
-	case 4:
-		return APP_MsgServer
-	case 5:
-		return APP_WorldServer
-	default:
-		return APP_NONE
-	}
-}
-
 func (ak AppKind) ToString() string {
-	if ak >= APP_NONE  && ak <= APP_WorldServer {
-		return  AppNames[ak]
+	if ak >= APP_NONE  && ak < APP_WorldServer {
+		return  appNames[ak]
 	}
-	return  AppNames[APP_NONE]
+	return  appNames[APP_NONE]
 }

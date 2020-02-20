@@ -19,7 +19,9 @@ type LoginServerFactory struct {
 
 
 
-func (lsf *LoginServerFactory)CreateAppBehavor() xengine.AppBehavior {
-     return  new(LogionServer)
+func (lsf *LoginServerFactory)CreateAppBehavor() xengine.ServerBehavior {
+     ls := new(LogionServer)
+     ls.OnStart()
+     return ls
 }
 

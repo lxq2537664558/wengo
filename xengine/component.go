@@ -12,6 +12,6 @@ type Component interface {
 	GetEntity() (*Entity,error)
 }
 
-type UpdateComponent interface {
-	Update() //更新
+type Updater interface {
+	OnUpdate() //更新
 }

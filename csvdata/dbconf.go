@@ -7,7 +7,7 @@ import (
 	"github.com/showgo/xutil"
 )
 
-var dbconfCsv map[string]*Dbconf
+var DbconfCsv map[string]*Dbconf
 
 type  Dbconf struct {
 	Dbname string //#数据库名称 字段名称  dbname
@@ -20,11 +20,11 @@ type  Dbconf struct {
 }
 
 func SetDbconfMapData(csvpath  string ) {
-    if dbconfCsv == nil {
-		dbconfCsv = make(map[string]*Dbconf)
+    if DbconfCsv == nil {
+		DbconfCsv = make(map[string]*Dbconf)
 	}
 	tem := getDbconfUsedData(csvpath)
-	dbconfCsv  = tem
+	DbconfCsv  = tem
 }
 
 func getDbconfUsedData(csvpath  string ) map[string]*Dbconf{
@@ -33,7 +33,7 @@ func getDbconfUsedData(csvpath  string ) map[string]*Dbconf{
 	for _, filedData := range csvmapdata {
 		one := new(Dbconf)
 		for filedName, filedval := range filedData {
-			isok := csvparse.SetFieldReflect(one, filedName, filedval)
+			isok := csvparse.ReflectSetField(one, filedName, filedval)
 			xutil.IsError(isok)
 			if _,ok := tem[one.Dbname]; ok {
 				fmt.Println(one.Dbname,"重复")
@@ -45,8 +45,9 @@ func getDbconfUsedData(csvpath  string ) map[string]*Dbconf{
 }
 
 func GetDbconfPtr(dbname string) *Dbconf{
-    if _,ok := dbconfCsv[dbname]; !ok  {
+    data, ok := DbconfCsv[dbname];
+	if  !ok  {
 		return nil
 	}
-	return dbconfCsv[dbname]
+	return data
 }
