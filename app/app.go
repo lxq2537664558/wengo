@@ -21,7 +21,7 @@ var (
 
 // 逻辑app 主要工作线程
 func AppRun() {
-	defer xlog.GrecoverToLog()
+	defer xlog.RecoverToLog()
 	defer proxy.AppWG.Done()
 	for EndFlag.IsOpen() {
 		appBehavior.OnUpdate() // 运行app 逻辑

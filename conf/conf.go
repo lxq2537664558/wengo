@@ -14,7 +14,6 @@ import (
 )
 
 var (
-
 	conf          *goini.Config
 	VolatileModel xlog.VolatileLogModel
 )

@@ -173,7 +173,7 @@ func (xl *Xlog) run() {
 		defer _wg.Done()
 	}
 	// 拉起宕机
-	defer GrecoverToStd()
+	defer RecoverToStd()
 	
 ENDLOOP:
 	for {

@@ -11,30 +11,24 @@ import (
 	"fmt"
 	"runtime"
 )
+var(
+	LenStackBuf = 4096
+)
 
-var  LenStackBuf    = 4096
-//拉起宕机标准输出
-func GrecoverToStd() {
+func RecoverToStd()  {
 	if rec := recover(); rec != nil {
-		if LenStackBuf > 0 {
-			buf := make([]byte, LenStackBuf)
-			l := runtime.Stack(buf, false)
-			fmt.Printf("%v\n%s \n", rec, buf[:l])
-		} else {
-			fmt.Printf("%v\n", rec)
-		}
+		buf := make([]byte, LenStackBuf)
+		l := runtime.Stack(buf, false)
+		fmt.Printf("%v\n%s \n", rec, buf[:l])
 	}
 }
 
+
 //拉起宕机日志输出
-func GrecoverToLog() {
+func RecoverToLog() {
 	if rec := recover(); rec != nil {
-		if LenStackBuf > 0 {
-			buf := make([]byte, LenStackBuf)
-			l := runtime.Stack(buf, false)
-			ErrorLog("app","%v\n%s", rec, buf[:l])
-		} else {
-			ErrorLog("app","%v", rec)
-		}
+		buf := make([]byte, LenStackBuf)
+		l := runtime.Stack(buf, false)
+		ErrorLog("app","%v\n%s", rec, buf[:l])
 	}
 }

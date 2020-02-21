@@ -13,6 +13,8 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/showgo/csvdata"
 	"github.com/showgo/protobuf/pb/login_proto"
+	"github.com/showgo/xutil"
+	"math"
 	
 	// "github.com/jinzhu/gorm"
 	"github.com/showgo/dbutil"
@@ -45,6 +47,30 @@ func main() {
 	// fmt.Println(strings.Join(strarr,"|"))
 	
 	// user := new(User)
+	
+	fmt.Println(xutil.IsLittleEndian() ,math.MaxInt32)
+}
+
+func TestSwitch(aname int)  {
+	switch aname {
+	case 1,10:
+		fmt.Println("aaa")
+	}
+}
+
+func DbTest()  {
+
+	csvdata.SetDbconfMapData("./csv")
+		// gorm.Open()
+	gamedb := dbutil.OpenDB(csvdata.GetDbconfPtr("gamedb"))
+	if gamedb == nil {
+		return
+	}
+	fmt.Println(dbutil.CheckTableExists(gamedb,"gamedb","Account"))
+}
+
+
+func  protobufTest(){
 	person := &login_proto.Person{
 		Id:10,
 		Name:"郑蛟元",
@@ -68,24 +94,3 @@ func main() {
 	proto.Unmarshal(data,person2)
 	fmt.Println("person2",person2)
 }
-
-func TestSwitch(aname int)  {
-	switch aname {
-	case 1,10:
-		fmt.Println("aaa")
-	}
-}
-
-func DbTest()  {
-
-	csvdata.SetDbconfMapData("./csv")
-		// gorm.Open()
-	gamedb := dbutil.OpenDB(csvdata.GetDbconfPtr("gamedb"))
-	if gamedb == nil {
-		return
-	}
-	fmt.Println(dbutil.CheckTableExists(gamedb,"gamedb","Account"))
-}
-
-
-

@@ -4,14 +4,17 @@
 //  组件接口
 package xengine
 
+type ServerBehavior interface {
+	Behavior
+	Updater
+}
 
+
+//一般行为接口
 type Behavior interface {
 	OnStart()     // 启动
 	OnInit(params interface{}) bool //初始化
 	OnRelease()              // 关闭On
 }
 
-type ServerBehavior interface {
-	Behavior
-	Updater
-}
+

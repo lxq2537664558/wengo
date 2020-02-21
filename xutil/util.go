@@ -13,6 +13,7 @@ import (
 	"path"
 	"runtime"
 	"strings"
+	"unsafe"
 )
 
 
@@ -137,4 +138,15 @@ func MemConsumed()  uint64 {
 	runtime.ReadMemStats(&memStat)
 	return memStat.Sys
 }
+//获取包的字符串名称
+func GetPackageStr(pkgname string)  string {
+	return fmt.Sprintf("\"%s\"",pkgname)
+}
 
+//主机是否是小端序列编码
+func IsLittleEndian() bool {
+	n := 0x1234
+	//转换获取小端的数值
+	f := *((*byte)(unsafe.Pointer(&n)))
+	return (f ^ 0x34) == 0
+}

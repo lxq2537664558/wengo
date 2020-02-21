@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"github.com/showgo/csvparse"
 	"github.com/showgo/xutil"
+	"github.com/showgo/xlog"
+	"sync/atomic"
 )
 
-var DbconfCsv map[string]*Dbconf
+var dbconfAtomic atomic.Value
 
 type  Dbconf struct {
 	Dbname string //#数据库名称 字段名称  dbname
@@ -20,11 +22,8 @@ type  Dbconf struct {
 }
 
 func SetDbconfMapData(csvpath  string ) {
-    if DbconfCsv == nil {
-		DbconfCsv = make(map[string]*Dbconf)
-	}
-	tem := getDbconfUsedData(csvpath)
-	DbconfCsv  = tem
+  	defer xlog.RecoverToStd()
+	dbconfAtomic.Store(getDbconfUsedData(csvpath))
 }
 
 func getDbconfUsedData(csvpath  string ) map[string]*Dbconf{
@@ -45,9 +44,20 @@ func getDbconfUsedData(csvpath  string ) map[string]*Dbconf{
 }
 
 func GetDbconfPtr(dbname string) *Dbconf{
-    data, ok := DbconfCsv[dbname];
-	if  !ok  {
+    alldata := GetAllDbconf()
+	if alldata == nil {
 		return nil
 	}
-	return data
+	if data, ok := alldata[dbname]; ok {
+		return data
+	}
+	return nil
+}
+
+func GetAllDbconf() map[string]*Dbconf{
+    val := dbconfAtomic.Load()
+	if data, ok := val.(map[string]*Dbconf); ok {
+		return data
+	}
+	return nil
 }
