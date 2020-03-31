@@ -4,6 +4,10 @@ option go_package = "./common_proto";
 
 package common_proto;
 
+//结果码
+message RestInt32CodeMsg {
+   int32 res_code = 1; //用户
+}
 
 //手机
 message test {

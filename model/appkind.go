@@ -37,7 +37,7 @@ func ItoAppKind(val int) AppKind {
 
 var appNames = [...]string{
 	"none",
-	"client",
+	"appclient",
 	"loginsv",
 	"gamesv",
 	"msgsv",

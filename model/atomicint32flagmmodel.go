@@ -23,6 +23,11 @@ func NewAtomicInt32Flag() *AtomicInt32FlagModel {
 	return new(AtomicInt32FlagModel)
 }
 
+// 检测是否关闭
+func (af *AtomicInt32FlagModel) IsClosed() bool {
+	return atomic.LoadInt32(&af.checkFlag) == CloseFlag
+}
+
 // 检测是否开启
 func (af *AtomicInt32FlagModel) IsOpen() bool {
 	return atomic.LoadInt32(&af.checkFlag) == OpenFlag

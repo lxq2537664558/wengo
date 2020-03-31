@@ -12,6 +12,7 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"strconv"
 	"strings"
 	"unsafe"
 )
@@ -90,6 +91,7 @@ func IsErrorNoPrintf(err error) bool  {
 	return err != nil
 }
 
+
 //判断字符串是否有数据  无数据返回true
 func StringIsNil(str string) bool  {
 	return   len(str) == 0 || str == ""
@@ -150,3 +152,24 @@ func IsLittleEndian() bool {
 	f := *((*byte)(unsafe.Pointer(&n)))
 	return (f ^ 0x34) == 0
 }
+
+
+func StrToUint8(str string) uint8{
+	return uint8(StrToInt(str))
+}
+
+func StrToUint16(str string) uint16{
+	return uint16(StrToInt(str))
+}
+
+func StrToUint32(str string) uint32{
+	return uint32(StrToInt(str))
+}
+func StrToInt(str string) int {
+	i, e := strconv.Atoi(str)
+	if e != nil {
+		return 0
+	}
+	return i
+}
+

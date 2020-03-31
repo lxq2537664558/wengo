@@ -1,7 +1,0 @@
-server_id,server_kind,server_name,out_addr,out_prot,max_connect,send_maxsize,rec_maxsize,write_cap_num
-int,int,string,string,string,int,int,int,int
-#服务器id,服务器类型,服务器名称,外部连接的地址,外部连接端口,最大连接数,发包最大数量,收包最大字节,连接写的包队列大小
-1001,2,LoginServer_1001,127.0.0.1,20001,10000,65000,65000,200
-1002,3,GameServer_1002,127.0.0.1,20002,10000,65000,65000,200
-1003,4,MsgServer ,127.0.0.1,20003,10000,65000,65000,200
-1004,5,WorldServer,127.0.0.1,20004,10000,65000,65000,200

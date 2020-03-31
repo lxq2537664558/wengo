@@ -25,6 +25,7 @@ type setFunc func(csvpath string)
 
 
 func ReLoadPublicCsvData()  {
+	fmt.Println("ReloadCsv")
 	go func() {
 		LoadPublicCsvData()
 	}()
@@ -41,6 +42,6 @@ func initCsvData(setfu []setFunc)  {
 }
 //登陆服csv相关方法
 var commoncsvset = []setFunc{
-	SetServerconfMapData,
+	SetAppconfMapData,
 	SetDbconfMapData,
 }

@@ -7,30 +7,16 @@
 package dbutil
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/showgo/csvdata"
-	"github.com/showgo/xutil"
 )
 
-func OpenDB(dbinfo *csvdata.Dbconf) *sql.DB {
-	if dbinfo == nil {
-		return nil
-	}
-	DataSoureName := GetMysqlDataSourceName(dbinfo)
-	// gorm.Open()
-	db,Erro := sql.Open("mysql", DataSoureName)
-	if xutil.IsError(Erro) {
-		return nil
-	}
-	db.SetMaxOpenConns(dbinfo.Maxopenconns)
-	db.SetMaxIdleConns(dbinfo.Maxidleconns)
-	if erro := db.Ping() ; xutil.IsError(erro) {
-		db.Close()
-		return nil
-	}
-	return db
-}
+var (
+	gamedb *MySqlDBStore //游戏库
+	logdb *MySqlDBStore  //日志库
+)
+
+
 
 func GetMysqlDataSourceName(dbinfo *csvdata.Dbconf) string {
 	if dbinfo == nil {
@@ -45,17 +31,3 @@ func GetMysqlDataSourceName(dbinfo *csvdata.Dbconf) string {
 		dbinfo.Dbname)
 }
 
-func CheckTableExists(db *sql.DB,dbname string,tableName string) bool{
-	if db == nil {
-		fmt.Println("dbinfo is nil")
-		return false
-	}
-	rows,erro := db.Query("SELECT t.TABLE_NAME FROM information_schema.TABLES AS t WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? ",dbname,tableName)
-	if xutil.IsError(erro) {
-		return false
-	}
-	if rows.Next() {
-		return true
-	}
-	return false
-}

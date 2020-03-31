@@ -20,130 +20,177 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-//手机
-type Phone struct {
-	Type                 int32    `protobuf:"varint,1,opt,name=type,proto3" json:"type,omitempty"`
-	Number               string   `protobuf:"bytes,2,opt,name=number,proto3" json:"number,omitempty"`
+//注册用户
+type ReqRegisterAccoutMsg struct {
+	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password             string   `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Phone) Reset()         { *m = Phone{} }
-func (m *Phone) String() string { return proto.CompactTextString(m) }
-func (*Phone) ProtoMessage()    {}
-func (*Phone) Descriptor() ([]byte, []int) {
+func (m *ReqRegisterAccoutMsg) Reset()         { *m = ReqRegisterAccoutMsg{} }
+func (m *ReqRegisterAccoutMsg) String() string { return proto.CompactTextString(m) }
+func (*ReqRegisterAccoutMsg) ProtoMessage()    {}
+func (*ReqRegisterAccoutMsg) Descriptor() ([]byte, []int) {
 	return fileDescriptor_67c21677aa7f4e4f, []int{0}
 }
 
-func (m *Phone) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Phone.Unmarshal(m, b)
+func (m *ReqRegisterAccoutMsg) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReqRegisterAccoutMsg.Unmarshal(m, b)
 }
-func (m *Phone) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Phone.Marshal(b, m, deterministic)
+func (m *ReqRegisterAccoutMsg) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReqRegisterAccoutMsg.Marshal(b, m, deterministic)
 }
-func (m *Phone) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Phone.Merge(m, src)
+func (m *ReqRegisterAccoutMsg) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReqRegisterAccoutMsg.Merge(m, src)
 }
-func (m *Phone) XXX_Size() int {
-	return xxx_messageInfo_Phone.Size(m)
+func (m *ReqRegisterAccoutMsg) XXX_Size() int {
+	return xxx_messageInfo_ReqRegisterAccoutMsg.Size(m)
 }
-func (m *Phone) XXX_DiscardUnknown() {
-	xxx_messageInfo_Phone.DiscardUnknown(m)
+func (m *ReqRegisterAccoutMsg) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReqRegisterAccoutMsg.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Phone proto.InternalMessageInfo
+var xxx_messageInfo_ReqRegisterAccoutMsg proto.InternalMessageInfo
 
-func (m *Phone) GetType() int32 {
+func (m *ReqRegisterAccoutMsg) GetUsername() string {
 	if m != nil {
-		return m.Type
-	}
-	return 0
-}
-
-func (m *Phone) GetNumber() string {
-	if m != nil {
-		return m.Number
+		return m.Username
 	}
 	return ""
 }
 
-//人
-type Person struct {
-	//后面的数字表示标识号
-	Id   int32  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	//repeated表示可重复
-	//可以有多个手机
-	Phones               []*Phone `protobuf:"bytes,3,rep,name=phones,proto3" json:"phones,omitempty"`
+func (m *ReqRegisterAccoutMsg) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+//登陆
+type ReqLoginMsg struct {
+	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password             string   `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Person) Reset()         { *m = Person{} }
-func (m *Person) String() string { return proto.CompactTextString(m) }
-func (*Person) ProtoMessage()    {}
-func (*Person) Descriptor() ([]byte, []int) {
+func (m *ReqLoginMsg) Reset()         { *m = ReqLoginMsg{} }
+func (m *ReqLoginMsg) String() string { return proto.CompactTextString(m) }
+func (*ReqLoginMsg) ProtoMessage()    {}
+func (*ReqLoginMsg) Descriptor() ([]byte, []int) {
 	return fileDescriptor_67c21677aa7f4e4f, []int{1}
 }
 
-func (m *Person) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Person.Unmarshal(m, b)
+func (m *ReqLoginMsg) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReqLoginMsg.Unmarshal(m, b)
 }
-func (m *Person) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Person.Marshal(b, m, deterministic)
+func (m *ReqLoginMsg) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReqLoginMsg.Marshal(b, m, deterministic)
 }
-func (m *Person) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Person.Merge(m, src)
+func (m *ReqLoginMsg) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReqLoginMsg.Merge(m, src)
 }
-func (m *Person) XXX_Size() int {
-	return xxx_messageInfo_Person.Size(m)
+func (m *ReqLoginMsg) XXX_Size() int {
+	return xxx_messageInfo_ReqLoginMsg.Size(m)
 }
-func (m *Person) XXX_DiscardUnknown() {
-	xxx_messageInfo_Person.DiscardUnknown(m)
+func (m *ReqLoginMsg) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReqLoginMsg.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Person proto.InternalMessageInfo
+var xxx_messageInfo_ReqLoginMsg proto.InternalMessageInfo
 
-func (m *Person) GetId() int32 {
+func (m *ReqLoginMsg) GetUsername() string {
 	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-func (m *Person) GetName() string {
-	if m != nil {
-		return m.Name
+		return m.Username
 	}
 	return ""
 }
 
-func (m *Person) GetPhones() []*Phone {
+func (m *ReqLoginMsg) GetPassword() string {
 	if m != nil {
-		return m.Phones
+		return m.Password
 	}
-	return nil
+	return ""
+}
+
+type ReqCreatePlayerMsg struct {
+	Playername           string   `protobuf:"bytes,1,opt,name=playername,proto3" json:"playername,omitempty"`
+	Sex                  int32    `protobuf:"varint,2,opt,name=sex,proto3" json:"sex,omitempty"`
+	Job                  int32    `protobuf:"varint,3,opt,name=job,proto3" json:"job,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReqCreatePlayerMsg) Reset()         { *m = ReqCreatePlayerMsg{} }
+func (m *ReqCreatePlayerMsg) String() string { return proto.CompactTextString(m) }
+func (*ReqCreatePlayerMsg) ProtoMessage()    {}
+func (*ReqCreatePlayerMsg) Descriptor() ([]byte, []int) {
+	return fileDescriptor_67c21677aa7f4e4f, []int{2}
+}
+
+func (m *ReqCreatePlayerMsg) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReqCreatePlayerMsg.Unmarshal(m, b)
+}
+func (m *ReqCreatePlayerMsg) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReqCreatePlayerMsg.Marshal(b, m, deterministic)
+}
+func (m *ReqCreatePlayerMsg) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReqCreatePlayerMsg.Merge(m, src)
+}
+func (m *ReqCreatePlayerMsg) XXX_Size() int {
+	return xxx_messageInfo_ReqCreatePlayerMsg.Size(m)
+}
+func (m *ReqCreatePlayerMsg) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReqCreatePlayerMsg.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReqCreatePlayerMsg proto.InternalMessageInfo
+
+func (m *ReqCreatePlayerMsg) GetPlayername() string {
+	if m != nil {
+		return m.Playername
+	}
+	return ""
+}
+
+func (m *ReqCreatePlayerMsg) GetSex() int32 {
+	if m != nil {
+		return m.Sex
+	}
+	return 0
+}
+
+func (m *ReqCreatePlayerMsg) GetJob() int32 {
+	if m != nil {
+		return m.Job
+	}
+	return 0
 }
 
 func init() {
-	proto.RegisterType((*Phone)(nil), "login_proto.Phone")
-	proto.RegisterType((*Person)(nil), "login_proto.Person")
+	proto.RegisterType((*ReqRegisterAccoutMsg)(nil), "login_proto.ReqRegisterAccoutMsg")
+	proto.RegisterType((*ReqLoginMsg)(nil), "login_proto.ReqLoginMsg")
+	proto.RegisterType((*ReqCreatePlayerMsg)(nil), "login_proto.ReqCreatePlayerMsg")
 }
 
 func init() { proto.RegisterFile("login.proto", fileDescriptor_67c21677aa7f4e4f) }
 
 var fileDescriptor_67c21677aa7f4e4f = []byte{
-	// 156 bytes of a gzipped FileDescriptorProto
+	// 183 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xce, 0xc9, 0x4f, 0xcf,
-	0xcc, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x82, 0x70, 0xe2, 0xc1, 0x1c, 0x25, 0x63, 0x2e,
-	0xd6, 0x80, 0x8c, 0xfc, 0xbc, 0x54, 0x21, 0x21, 0x2e, 0x96, 0x92, 0xca, 0x82, 0x54, 0x09, 0x46,
-	0x05, 0x46, 0x0d, 0xd6, 0x20, 0x30, 0x5b, 0x48, 0x8c, 0x8b, 0x2d, 0xaf, 0x34, 0x37, 0x29, 0xb5,
-	0x48, 0x82, 0x49, 0x81, 0x51, 0x83, 0x33, 0x08, 0xca, 0x53, 0x8a, 0xe0, 0x62, 0x0b, 0x48, 0x2d,
-	0x2a, 0xce, 0xcf, 0x13, 0xe2, 0xe3, 0x62, 0xca, 0x4c, 0x81, 0xea, 0x61, 0xca, 0x4c, 0x01, 0x99,
-	0x92, 0x97, 0x98, 0x9b, 0x0a, 0x55, 0x0f, 0x66, 0x0b, 0x69, 0x71, 0xb1, 0x15, 0x80, 0xac, 0x28,
-	0x96, 0x60, 0x56, 0x60, 0xd6, 0xe0, 0x36, 0x12, 0xd2, 0x43, 0x72, 0x80, 0x1e, 0xd8, 0xf6, 0x20,
-	0xa8, 0x0a, 0x27, 0xfe, 0x28, 0x5e, 0x3d, 0x7d, 0x24, 0xe9, 0x24, 0x36, 0x30, 0x65, 0x0c, 0x08,
-	0x00, 0x00, 0xff, 0xff, 0xc3, 0x2d, 0xac, 0x38, 0xc2, 0x00, 0x00, 0x00,
+	0xcc, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x82, 0x70, 0xe2, 0xc1, 0x1c, 0x25, 0x3f, 0x2e,
+	0x91, 0xa0, 0xd4, 0xc2, 0xa0, 0xd4, 0xf4, 0xcc, 0xe2, 0x92, 0xd4, 0x22, 0xc7, 0xe4, 0xe4, 0xfc,
+	0xd2, 0x12, 0xdf, 0xe2, 0x74, 0x21, 0x29, 0x2e, 0x8e, 0xd2, 0xe2, 0xd4, 0xa2, 0xbc, 0xc4, 0xdc,
+	0x54, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x38, 0x1f, 0x24, 0x57, 0x90, 0x58, 0x5c, 0x5c,
+	0x9e, 0x5f, 0x94, 0x22, 0xc1, 0x04, 0x91, 0x83, 0xf1, 0x95, 0x5c, 0xb9, 0xb8, 0x83, 0x52, 0x0b,
+	0x7d, 0x40, 0x36, 0x50, 0x62, 0x4c, 0x04, 0x97, 0x50, 0x50, 0x6a, 0xa1, 0x73, 0x51, 0x6a, 0x62,
+	0x49, 0x6a, 0x40, 0x4e, 0x62, 0x65, 0x6a, 0x11, 0xc8, 0x34, 0x39, 0x2e, 0xae, 0x02, 0x30, 0x07,
+	0xc9, 0x3c, 0x24, 0x11, 0x21, 0x01, 0x2e, 0xe6, 0xe2, 0xd4, 0x0a, 0xb0, 0x61, 0xac, 0x41, 0x20,
+	0x26, 0x48, 0x24, 0x2b, 0x3f, 0x49, 0x82, 0x19, 0x22, 0x92, 0x95, 0x9f, 0xe4, 0xc4, 0x1f, 0xc5,
+	0xab, 0xa7, 0x8f, 0x14, 0x02, 0x49, 0x6c, 0x60, 0xca, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x0a,
+	0xe7, 0x10, 0x49, 0x24, 0x01, 0x00, 0x00,
 }

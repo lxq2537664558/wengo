@@ -29,6 +29,6 @@ func RecoverToLog() {
 	if rec := recover(); rec != nil {
 		buf := make([]byte, LenStackBuf)
 		l := runtime.Stack(buf, false)
-		ErrorLog("app","%v\n%s", rec, buf[:l])
+		ErrorLog("","%v\n%s", rec, buf[:l])
 	}
 }

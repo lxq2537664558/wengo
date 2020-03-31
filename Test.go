@@ -1,5 +1,5 @@
 /*
-创建时间: 2019/11/24
+创建时间: 2020/3/29
 作者: zjy
 功能介绍:
 
@@ -9,88 +9,68 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang/protobuf/proto"
-	"github.com/showgo/csvdata"
-	"github.com/showgo/protobuf/pb/login_proto"
-	"github.com/showgo/xutil"
-	"math"
-	
-	// "github.com/jinzhu/gorm"
-	"github.com/showgo/dbutil"
+	"github.com/showgo/xcontainer/queue"
+	"reflect"
 	"sync"
 )
 
-type User struct{
-	Name string
-	Age int
-}
-
+var locker = new(sync.Mutex)
+var cond = sync.NewCond(locker)
+var queue1 *queue.Queue
 var wg sync.WaitGroup
 
+var pool sync.Pool
+
+type Person struct {
+	name string
+	age int
+}
+
 func main() {
-	// var a int
-	// a = 100
-	// var c float32
-	// c = 1.005
-	// MyPrintf(a)
-	// MyPrintf(c)
-	// PathPackage()
-	// filepathTest()
-	// var str string
-	// str = "ddasd"
-	//
-	// strarr :=[]string{"cc"}
-	//
-	// upstr := xutil.Capitalize(str)
-	// fmt.Println(upstr)
-	// fmt.Println(strings.Join(strarr,"|"))
-	
-	// user := new(User)
-	
-	fmt.Println(xutil.IsLittleEndian() ,math.MaxInt32)
+	TestPool()
 }
 
-func TestSwitch(aname int)  {
-	switch aname {
-	case 1,10:
-		fmt.Println("aaa")
+func TestPool()  {
+	pool.New = func() interface{} {
+		return new(Person)
 	}
+	data := pool.Get()
+	fmt.Println(data)
 }
 
-func DbTest()  {
-
-	csvdata.SetDbconfMapData("./csv")
-		// gorm.Open()
-	gamedb := dbutil.OpenDB(csvdata.GetDbconfPtr("gamedb"))
-	if gamedb == nil {
-		return
+func TestCond(){
+	queue1 = queue.NewQueue()
+	_, err := queue1.PopFront()
+	if err != nil {
+		fmt.Println(err)
 	}
-	fmt.Println(dbutil.CheckTableExists(gamedb,"gamedb","Account"))
-}
-
-
-func  protobufTest(){
-	person := &login_proto.Person{
-		Id:10,
-		Name:"郑蛟元",
+	wg.Add(20)
+	// 10个消费
+	for i := 0; i < 10; i++ {
+		go func(x int) {
+			defer wg.Done()
+			cond.L.Lock()         // 获取锁
+			if queue1.Len() == 0 {
+				cond.Wait() // 等待通知，阻塞当前 goroutine
+			}
+			cond.L.Unlock() // 释放锁
+			val, erro := queue1.PopFront()
+			if erro != nil {
+				fmt.Println(erro)
+				return
+			}
+			// do something. 这里仅打印
+			fmt.Println("队列的值 ",val,"type=",reflect.TypeOf(val))
+		}(i)
 	}
-	onePhone := new(login_proto.Phone)
-	onePhone.Type = 2
-	onePhone.Number = "15223153231"
-	onePhone1 := new(login_proto.Phone)
-	onePhone1.Type = 3
-	onePhone1.Number = "733528"
-	person.Phones = append(	person.Phones,onePhone,onePhone1)
+	for i := 0; i < 10; i++ {
+		go func(x int) {
+			defer wg.Done()
+			queue1.PushBack(x)
+			cond.Signal()   // 通知其他线程
+		}(i)
+	}
 	
-	fmt.Println(person)
-	data,erro := proto.Marshal(person)
-	if erro  != nil {
-		fmt.Println(erro)
-	}
-	fmt.Println(data,len(data))
-	person2 := new(login_proto.Person)
-	
-	proto.Unmarshal(data,person2)
-	fmt.Println("person2",person2)
+	wg.Wait()
+	fmt.Printf("end")
 }

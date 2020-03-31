@@ -18,8 +18,8 @@ import (
 
 var (
 	PathModelPtr *model.PathModel    //最先有路径对象
-	SververID    int                 //serverId
-	SvConf       *csvdata.Serverconf // 服务器配置
+	AppID        int                 //serverId
+	AppConf      *csvdata.Appconf // 服务器配置
 	appKind      model.AppKind       // app类型 通过外部传递参数确定
 	AppFactory   xengine.AppFactory
 	AppWG        sync.WaitGroup      // app进程结束标志
@@ -54,7 +54,7 @@ func SetAppPath() {
 
 
 func InitKind()  {
-	appKind = model.ItoAppKind(SvConf.Server_kind)
+	appKind = model.ItoAppKind(AppConf.App_kind)
 }
 
 func GetAppKind()  model.AppKind {
@@ -75,7 +75,7 @@ func GetSecenName() string  {
 	switch appKind {
 	//gameserver需要区分场景
 	case model.APP_GameServer:
-		return SvConf.Server_name
+		return AppConf.App_name
 	//这些服务器器都没有场景名称
 	// case model.APP_NONE,model.APP_Client,model.APP_MsgServer,model.APP_WorldServer:
 	// 	return ""

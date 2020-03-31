@@ -76,10 +76,13 @@ func SetFiledMap(filedInfo map[string]interface{}, filedName, filedType, filedva
 func CsvStrToInterfaceStrT(fliedtype string, strval string) interface{} {
 	switch fliedtype {
 	case "int":
-		inval, erro := strconv.Atoi(strval)
-		if !xutil.IsError(erro) {
-			return inval
-		}
+		return xutil.StrToInt(strval)
+	case "uint8":
+		return xutil.StrToUint8(strval)
+	case "uint16":
+		return xutil.StrToUint16(strval)
+	case "uint32":
+		return xutil.StrToUint32(strval)
 	case "float64":
 		flt64, erro := strconv.ParseFloat(strval, 64)
 		if !xutil.IsError(erro) {

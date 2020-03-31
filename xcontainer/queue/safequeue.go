@@ -38,8 +38,8 @@ func (safeq *SafeQueue)PushBack(v interface{})  {
 
 // 获得队列的长度
 func (safeq *SafeQueue)Len()  int {
-	safeq.lock.Lock()
-	defer safeq.lock.Unlock()
+	safeq.lock.RLock()
+	defer safeq.lock.RUnlock()
 	return safeq.queue.Len()
 }
 
@@ -50,13 +50,13 @@ func (safeq *SafeQueue)PopFront() (interface{},error)  {
 }
 
 func (safeq *SafeQueue)Front()  *list.Element {
-	safeq.lock.RLock()
-	defer safeq.lock.RUnlock()
+	safeq.lock.Lock()
+	defer safeq.lock.Unlock()
 	return safeq.queue.Front()
 }
 
 func (safeq *SafeQueue)Clear(){
-	safeq.lock.RLock()
-	defer safeq.lock.RUnlock()
+	safeq.lock.Lock()
+	defer safeq.lock.Unlock()
 	safeq.queue.Clear()
 }

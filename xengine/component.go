@@ -13,5 +13,5 @@ type Component interface {
 }
 
 type Updater interface {
-	OnUpdate() //更新
+	OnUpdate() bool //更新
 }

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/showgo/conf"
 	"github.com/showgo/csvdata"
+	"github.com/showgo/global"
 	"github.com/showgo/proxy"
 	"github.com/showgo/xlog"
 	"time"
@@ -25,6 +26,9 @@ func init() {
 func GetAppStart() {
 	fmt.Println("App GetAppStart")
 	
+	//拉起宕机
+	defer global.GrecoverToStd()
+	
 	proxy.InitProxy()
 	csvdata.SetCsvPath(	proxy.PathModelPtr.CsvPath)
 	csvdata.LoadPublicCsvData() // 读取公共的csv
@@ -32,24 +36,25 @@ func GetAppStart() {
 	ParseCmd()//获取命令行
 	OnAppStart()//解析完命令再启动对应程序
 	proxy.AppWG.Add(1)
-	go AppRun()  // App 主要工作线程
+	// go AppRun()  // App 主要工作线程
 	proxy.AppWG.Wait() // 等待app退出
 	//CloseApp()   // 关闭app退出所有程序
 }
 
 // 程序启动获取命令行参数
 func ParseCmd() {
-	flag.IntVar(&proxy.SververID, "ServerID", 0, "请输入app id")
+	flag.IntVar(&proxy.AppID, "AppID", 0, "请输入app id")
 	flag.Parse()
 	for {
-		proxy.SvConf = csvdata.GetServerconfPtr(proxy.SververID)
-		if proxy.SvConf == nil {
+		proxy.AppConf = csvdata.GetAppconfPtr(proxy.AppID)
+		if proxy.AppConf == nil {
 			fmt.Println( "serverID 未找到")
 		} else {
 			break
 		}
 		time.Sleep(time.Second * 5)
 	}
+	fmt.Println( "ParseCmd success")
 }
 
 // 根据配置启动对应服务器
@@ -68,11 +73,11 @@ func OnAppStart() {
 
 func initLog() {
 	logInit := &xlog.LogInitModel{
-		ServerName:proxy.SvConf.Server_name,
+		ServerName:proxy.AppConf.App_name,
 		LogsPath:proxy.PathModelPtr.LogsPath,
 		Volatile:conf.VolatileModel,
 	}
-	xlog.NewXlog(logInit,&proxy.AppWG)
+	xlog.NewXlog(logInit)
 }
 
 

@@ -7,6 +7,7 @@ package app
 
 import (
 	"fmt"
+	"github.com/showgo/app/appclient"
 	"github.com/showgo/app/apploginsv"
 	"github.com/showgo/model"
 	"github.com/showgo/proxy"
@@ -24,7 +25,11 @@ func AppRun() {
 	defer xlog.RecoverToLog()
 	defer proxy.AppWG.Done()
 	for EndFlag.IsOpen() {
-		appBehavior.OnUpdate() // 运行app 逻辑
+		// 运行app 逻辑
+		if !appBehavior.OnUpdate()  {
+		    break
+		}
+		
 	}
 	onCloseApp()
 }
@@ -38,13 +43,15 @@ func SetAppOpen()  {
 // 关闭app 程序
 func CloseApp() {
 	EndFlag.Close()
+	onCloseApp()
 }
 
 // 执行关闭
 func onCloseApp() {
 	appBehavior.OnRelease()                // 进程结束
 	proxy.RealseProxy()
-	xlog.CloseLog(xlog.CloseType_nomarl) // 退出日志
+	xlog.CloseLog() // 退出日志
+	proxy.AppWG.Done()
 	fmt.Println("App Close")
 }
 
@@ -54,7 +61,7 @@ func NewAppFactory(svKind model.AppKind) xengine.AppFactory {
 	case model.APP_NONE:
 		return nil
 	case model.APP_Client:
-		return nil
+		return new(appclient.ClientFactory)
 	case model.APP_LoginServer: // 工厂
 		return new(apploginsv.LoginServerFactory)
 	case model.APP_GameServer:
